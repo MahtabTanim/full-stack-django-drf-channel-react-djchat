@@ -1,0 +1,6 @@
+DEBUG=False
+SECRET_KEY=sdfsadfdsafdsfe+7q_t^k0a@7u&&6_b!m)%5oy#k6u6
+DB_USER=fasdsds
+PASSWORD=sfadsfdsdf
+HOST=localhost
+PORT=5432
