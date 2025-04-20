@@ -9,7 +9,7 @@ class ChannelSerializer(serializers.ModelSerializer):
 
 
 class ServerSerializer(serializers.ModelSerializer):
-    channel_server = ChannelSerializer(many=True)
+    # channel_server = ChannelSerializer(many=True)
     total_members = serializers.SerializerMethodField()
 
     class Meta:
@@ -17,17 +17,22 @@ class ServerSerializer(serializers.ModelSerializer):
         exclude = [
             "member",
         ]
-        # fields = [
-        #     "id",
-        #     "name",
-        #     "category",
-        #     "description",
-        #     "channel_server",
-        #     "total_members",
-        # ]
+
+    def validate(self, data):
+        """
+        Custom validation to ensure required fields are not empty.
+        """
+        if not data.get("name"):
+            raise serializers.ValidationError({"name": "This field is required."})
+        if not data.get("owner"):
+            raise serializers.ValidationError({"owner": "This field is required."})
+        if not data.get("category"):
+            raise serializers.ValidationError({"category": "This field is required."})
+        return data
 
     def get_total_members(self, obj):
-        return obj.member.count()
+        if obj.pk:
+            return obj.member.count()
 
     # def to_representation(self, instance):
     #     data = super().to_representation(instance)

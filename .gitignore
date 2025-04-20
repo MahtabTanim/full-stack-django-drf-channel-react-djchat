@@ -175,3 +175,4 @@ cython_debug/
 .pypirc
 .flake8
 db.sqlite3
+media/
