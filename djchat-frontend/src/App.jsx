@@ -13,7 +13,7 @@ export default function App() {
   const theme = MuiTheme();
   return (
     <ThemeProvider theme={theme}>
-      <RouterProvider router={router} />;
+      <RouterProvider router={router} />
     </ThemeProvider>
   );
 }

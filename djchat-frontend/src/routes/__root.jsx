@@ -9,7 +9,6 @@ export const Route = createRootRoute({
       <div>
         <CssBaseline />
         <Outlet />
-        <h1>This will always be loaded on app page as Footer </h1>
       </div>
       <TanStackRouterDevtools />
     </>

@@ -8,6 +8,13 @@ export default function MuiTheme() {
     primaryAppBar: {
       height: 50,
     },
+    primaryDrawer: {
+      width: 240,
+      closed: 70,
+    },
+    secondaryDrawer: {
+      width: 240,
+    },
     components: {
       MuiAppBar: {
         defaultProps: {
