@@ -176,3 +176,4 @@ cython_debug/
 .flake8
 db.sqlite3
 media/
+.vscode/settings.json

@@ -2,6 +2,7 @@ import { Box, CssBaseline } from "@mui/material";
 import PrimaryAppBar from "./templates/PrimaryAppBar";
 import PrimaryDrawer from "./templates/PrimaryDrawer";
 import SecondaryDrawer from "./templates/SecondaryDrawer";
+import PopularChannels from "../components/PopularChannels";
 
 export default function Homepage() {
   return (
@@ -9,7 +10,9 @@ export default function Homepage() {
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
         <PrimaryAppBar />
-        <PrimaryDrawer />
+        <PrimaryDrawer>
+          <PopularChannels />
+        </PrimaryDrawer>
         <SecondaryDrawer />
       </Box>
     </>

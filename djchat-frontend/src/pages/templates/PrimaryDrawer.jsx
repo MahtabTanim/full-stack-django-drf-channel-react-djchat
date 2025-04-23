@@ -3,8 +3,9 @@ import { Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import DrawerToggle from "../../components/DrawerToggle";
 import MuiDrawer from "@mui/material/Drawer";
+import React from "react";
 
-export default function PrimaryDrawer() {
+export default function PrimaryDrawer({ children }) {
   const below600 = useMediaQuery("(max-width: 599px)");
   const [primaryDrawerStatus, setPrimaryDrawerStatus] = useState(!below600);
   useEffect(() => {
@@ -39,7 +40,7 @@ export default function PrimaryDrawer() {
 
   const Drawer = styled(
     MuiDrawer,
-    {}
+    {},
   )(({ theme, open }) => ({
     width: theme.primaryDrawer.width,
     whiteSpace: "nowrap",
@@ -84,12 +85,10 @@ export default function PrimaryDrawer() {
               handlePrimaryDrawerOpen={handlePrimaryDrawerOpen}
               handlePrimaryDrawerClose={handlePrimaryDrawerClose}
             />
-            {Array.from({ length: 100 }).map((_, index) => (
-              <Typography component={"p"} key={index}>
-                {index + 1}
-              </Typography>
-            ))}
           </Box>
+          {React.Children.map(children, (child) =>
+            React.cloneElement(child, { primaryDrawerStatus }),
+          )}
         </Box>
       </Drawer>
     </>
