@@ -11,6 +11,7 @@ import { Link } from "@tanstack/react-router";
 import { IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useEffect, useState } from "react";
+import ExploreCategories from "../../components/SecondaryDrawer/ExploreCategories";
 
 export default function PrimaryAppBar() {
   const theme = useTheme();
@@ -26,6 +27,17 @@ export default function PrimaryAppBar() {
   function toggleSideMenu() {
     setSideMenuStatus(!sideMenuStatus);
   }
+
+  const categoryList = () => (
+    <Box
+      sx={{ paddingTop: `${theme.primaryAppBar.height}px`, minWidth: 200 }}
+      onClick={toggleSideMenu()}
+      onKeyDown={toggleSideMenu()}
+    >
+      <ExploreCategories />
+    </Box>
+  );
+
   return (
     <AppBar
       sx={{
@@ -57,11 +69,16 @@ export default function PrimaryAppBar() {
           open={sideMenuStatus && !bigScreen}
           ModalProps={{ keepMounted: true }}
         >
-          {Array.from({ length: 10 }).map((_, index) => (
-            <Typography component={"p"} key={index}>
-              {index + 1}
-            </Typography>
-          ))}
+          <Box
+            sx={{
+              paddingTop: `${theme.primaryAppBar.height}px`,
+              minWidth: 200,
+            }}
+            onClick={toggleSideMenu}
+            onKeyDown={toggleSideMenu}
+          >
+            <ExploreCategories />
+          </Box>
         </Drawer>
         <Link
           style={{

@@ -4,12 +4,13 @@ import PrimaryDrawer from "./templates/PrimaryDrawer";
 import SecondaryDrawer from "./templates/SecondaryDrawer";
 import PopularChannels from "../components/PrimaryDrawer/PopularChannels";
 import ExploreCategories from "../components/SecondaryDrawer/ExploreCategories";
-
-export default function Homepage() {
+import ExploreServers from "../components/Main/ExploreServers";
+export default function Explore() {
   return (
     <>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
+
         <PrimaryAppBar />
         <PrimaryDrawer>
           <PopularChannels />
@@ -17,6 +18,7 @@ export default function Homepage() {
         <SecondaryDrawer>
           <ExploreCategories />
         </SecondaryDrawer>
+        <ExploreServers />
       </Box>
     </>
   );

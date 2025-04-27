@@ -1,17 +1,9 @@
 import { Box, Typography, List } from "@mui/material";
 import { useTheme } from "@mui/material";
-import { useEffect, useState } from "react";
-import axios from "axios";
 
 import { useQuery } from "@tanstack/react-query";
-export default function SecondaryDrawer() {
+export default function SecondaryDrawer({ children }) {
   const theme = useTheme();
-  const { isPending, data, error } = useQuery({
-    queryKey: ["api/server"],
-    // queryFn: () => fetch("api/server/select/").then((res) => res.json()),
-    queryFn: () => axios.get("api/server/select/").then((res) => res.data),
-    staleTime: 30000,
-  });
   return (
     <>
       <Box
@@ -24,46 +16,8 @@ export default function SecondaryDrawer() {
           overflow: "auto",
         }}
       >
-        {error ? (
-          <>
-            <h1>Error Found</h1>
-          </>
-        ) : null}
-        {!error && !isPending ? <ShowData data={data} /> : <Loading />}
+        {children}
       </Box>
     </>
-  );
-
-  function ShowData({ data }) {
-    return (
-      <>
-        {
-          <ul>
-            {data.map((value, key) => (
-              <li key={key}>
-                <h5>{value.name}</h5>
-              </li>
-            ))}
-          </ul>
-        }
-      </>
-    );
-  }
-}
-
-function Loading() {
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100%",
-      }}
-    >
-      <Typography variant="h6" color="textSecondary">
-        Loading...
-      </Typography>
-    </Box>
   );
 }

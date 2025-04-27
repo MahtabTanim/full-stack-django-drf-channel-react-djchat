@@ -1,8 +1,8 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Server
-from .serializers import ServerSerializer
+from .models import Server, Category
+from .serializers import ServerSerializer, CategorySerializer
 from rest_framework.exceptions import AuthenticationFailed
 from . import schema
 
@@ -45,7 +45,6 @@ class ServerListViewSet(ModelViewSet):
             raise AuthenticationFailed()
         if category:
             servers = servers.filter(category__name=category)
-            print(servers)
         if by_user:
             user_id = request.user.id
             servers = servers.filter(member=user_id)
@@ -70,3 +69,8 @@ class ServerListViewSet(ModelViewSet):
     #         )
     #     else:
     #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CategoryListViewSet(ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer

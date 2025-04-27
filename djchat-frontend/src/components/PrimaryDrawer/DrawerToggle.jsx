@@ -5,6 +5,10 @@ export default function DrawerToggle({
   handlePrimaryDrawerOpen,
   handlePrimaryDrawerClose,
 }) {
+  console.log({ primarydrawerstatus: primaryDrawerStatus });
+  function handleClick() {
+    console.log("clicked");
+  }
   return (
     <>
       <Box

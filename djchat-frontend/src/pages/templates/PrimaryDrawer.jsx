@@ -1,11 +1,12 @@
 import { Box, styled, useMediaQuery, useTheme } from "@mui/material";
 import { Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import DrawerToggle from "../../components/DrawerToggle";
+import DrawerToggle from "../../components/PrimaryDrawer/DrawerToggle";
 import MuiDrawer from "@mui/material/Drawer";
 import React from "react";
 
 export default function PrimaryDrawer({ children }) {
+  const theme = useTheme();
   const below600 = useMediaQuery("(max-width: 599px)");
   const [primaryDrawerStatus, setPrimaryDrawerStatus] = useState(!below600);
   useEffect(() => {
@@ -18,8 +19,6 @@ export default function PrimaryDrawer({ children }) {
   const handlePrimaryDrawerClose = () => {
     setPrimaryDrawerStatus(false);
   };
-
-  const theme = useTheme();
 
   const openedMixin = () => ({
     transition: theme.transitions.create("width", {
