@@ -16,6 +16,7 @@ import axios from "axios";
 
 export default function ExploreCategories() {
   const theme = useTheme();
+  const isDarkMode = theme.palette.mode === "dark";
   const { isPending, data, error } = useQuery({
     queryKey: ["api/categories"],
     queryFn: () =>
@@ -56,7 +57,11 @@ export default function ExploreCategories() {
               <ListItemButton sx={{ minHeight: 48 }}>
                 <ListItemIcon sx={{ minWidth: 0, justifyContent: "center" }}>
                   <ListItemAvatar sx={{ minWidth: "0px" }}>
-                    <Avatar alt="server-icon" src={category.icon} />
+                    <Avatar
+                      alt="server-icon"
+                      src={category.icon}
+                      sx={{ filter: isDarkMode ? "invert(100%)" : "none" }}
+                    />
                   </ListItemAvatar>
                 </ListItemIcon>
                 <ListItemText

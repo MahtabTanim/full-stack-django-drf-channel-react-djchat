@@ -1,8 +1,7 @@
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 import { NotFoundComponent } from "./routes/__root";
-import { ThemeProvider } from "@mui/material";
-import MuiTheme from "./theme/theme";
+import ToggleColorMode from "./components/contexts/ToggleColorMode";
 import {
   useQuery,
   useMutation,
@@ -10,6 +9,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+import MuiTheme from "./theme/theme";
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
@@ -21,12 +21,11 @@ const router = createRouter({
 });
 
 export default function App() {
-  const theme = MuiTheme();
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={theme}>
+      <ToggleColorMode>
         <RouterProvider router={router} />
-      </ThemeProvider>
+      </ToggleColorMode>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );

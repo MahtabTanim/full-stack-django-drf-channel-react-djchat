@@ -12,7 +12,8 @@ import { IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useEffect, useState } from "react";
 import ExploreCategories from "../../components/SecondaryDrawer/ExploreCategories";
-
+import AccountButton from "../../components/PrimaryAppbar/AccountButton";
+import ModeSwitcher from "../../components/PrimaryAppbar/ModeSwitcher";
 export default function PrimaryAppBar() {
   const theme = useTheme();
   const [sideMenuStatus, setSideMenuStatus] = useState(false);
@@ -100,6 +101,8 @@ export default function PrimaryAppBar() {
             DJCHAT
           </Typography>
         </Link>
+        <Box sx={{ flexGrow: 1 }}></Box>
+        <AccountButton />
       </Toolbar>
     </AppBar>
   );

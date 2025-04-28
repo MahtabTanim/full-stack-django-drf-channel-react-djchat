@@ -1,6 +1,6 @@
 import { createTheme, responsiveFontSizes } from "@mui/material";
 
-export default function MuiTheme() {
+export default function MuiTheme(mode) {
   let theme = createTheme({
     typography: {
       fontFamily: ["IBM Plex Sans", "sans-serif"].join(","),
@@ -18,6 +18,9 @@ export default function MuiTheme() {
     },
     secondaryDrawer: {
       width: 240,
+    },
+    palette: {
+      mode,
     },
     components: {
       MuiAppBar: {
