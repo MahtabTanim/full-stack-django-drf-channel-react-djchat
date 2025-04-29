@@ -1,7 +1,14 @@
-import { Box, styled, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  styled,
+  useMediaQuery,
+  useTheme,
+  IconButton,
+} from "@mui/material";
 import { Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import DrawerToggle from "../../components/PrimaryDrawer/DrawerToggle";
+import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import MuiDrawer from "@mui/material/Drawer";
 import React from "react";
 
@@ -69,7 +76,7 @@ export default function PrimaryDrawer({ children }) {
           },
         }}
       >
-        <Box>
+        <Box sx={{ position: "relative" }}>
           <Box
             sx={{
               position: "absolute",
@@ -77,6 +84,9 @@ export default function PrimaryDrawer({ children }) {
               right: 0,
               p: 0,
               width: primaryDrawerStatus ? "auto" : "100%",
+              display: "flex",
+              justifyContent: "flex-end",
+              zIndex: 1301, // higher than MUI Drawer default (1200)
             }}
           >
             <DrawerToggle
@@ -85,6 +95,7 @@ export default function PrimaryDrawer({ children }) {
               handlePrimaryDrawerClose={handlePrimaryDrawerClose}
             />
           </Box>
+
           {React.Children.map(children, (child) =>
             React.cloneElement(child, { primaryDrawerStatus }),
           )}

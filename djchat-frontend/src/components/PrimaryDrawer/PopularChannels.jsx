@@ -38,7 +38,6 @@ export default function PopularChannels({ primaryDrawerStatus }) {
       <Box sx={{ ...boxStyles, position: "sticky" }}>
         <Typography
           sx={{
-            backgroundColor: "red",
             display: primaryDrawerStatus ? "block" : "none",
           }}
           component={"div"}
