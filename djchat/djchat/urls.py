@@ -5,6 +5,7 @@ from rest_framework.routers import DefaultRouter
 from server.views import ServerListViewSet, CategoryListViewSet
 from django.conf import settings
 from django.conf.urls.static import static
+from webchat.consumer import WebChatConsumer
 
 router = DefaultRouter()
 router.register("api/server/select", ServerListViewSet, basename="server")
@@ -19,6 +20,11 @@ urlpatterns = [
         name="swagger-ui",
     ),
 ] + router.urls
+
+websocketURLPatterns = [
+    path("ws/test", WebChatConsumer.as_asgi()),
+]
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

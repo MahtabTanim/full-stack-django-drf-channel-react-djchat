@@ -11,11 +11,18 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as ServerImport } from './routes/server'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 import { Route as ExploreCategoryNameImport } from './routes/explore/$categoryName'
 
 // Create/Update Routes
+
+const ServerRoute = ServerImport.update({
+  id: '/server',
+  path: '/server',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const AboutRoute = AboutImport.update({
   id: '/about',
@@ -53,6 +60,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutImport
       parentRoute: typeof rootRoute
     }
+    '/server': {
+      id: '/server'
+      path: '/server'
+      fullPath: '/server'
+      preLoaderRoute: typeof ServerImport
+      parentRoute: typeof rootRoute
+    }
     '/explore/$categoryName': {
       id: '/explore/$categoryName'
       path: '/explore/$categoryName'
@@ -68,12 +82,14 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/server': typeof ServerRoute
   '/explore/$categoryName': typeof ExploreCategoryNameRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/server': typeof ServerRoute
   '/explore/$categoryName': typeof ExploreCategoryNameRoute
 }
 
@@ -81,27 +97,30 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/server': typeof ServerRoute
   '/explore/$categoryName': typeof ExploreCategoryNameRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/explore/$categoryName'
+  fullPaths: '/' | '/about' | '/server' | '/explore/$categoryName'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/explore/$categoryName'
-  id: '__root__' | '/' | '/about' | '/explore/$categoryName'
+  to: '/' | '/about' | '/server' | '/explore/$categoryName'
+  id: '__root__' | '/' | '/about' | '/server' | '/explore/$categoryName'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  ServerRoute: typeof ServerRoute
   ExploreCategoryNameRoute: typeof ExploreCategoryNameRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  ServerRoute: ServerRoute,
   ExploreCategoryNameRoute: ExploreCategoryNameRoute,
 }
 
@@ -117,6 +136,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/about",
+        "/server",
         "/explore/$categoryName"
       ]
     },
@@ -125,6 +145,9 @@ export const routeTree = rootRoute
     },
     "/about": {
       "filePath": "about.jsx"
+    },
+    "/server": {
+      "filePath": "server.jsx"
     },
     "/explore/$categoryName": {
       "filePath": "explore/$categoryName.jsx"

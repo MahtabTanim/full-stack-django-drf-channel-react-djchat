@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     # defined apps
     "server",
     "account",
+    "webchat",
     # 3rd party
     "corsheaders",
     "rest_framework",
@@ -156,3 +157,8 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
 ]
+
+# django channel settings
+CHANNEL_LAYERS = {
+    "default": {"BACKEND": "channels.layers.InMemoryChannelLayer"},
+}
