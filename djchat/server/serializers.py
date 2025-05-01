@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Server, Channel, Category
+from webchat.models import Message
 
 
 class ChannelSerializer(serializers.ModelSerializer):
@@ -15,7 +16,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class ServerSerializer(serializers.ModelSerializer):
-    # channel_server = ChannelSerializer(many=True)
+    channel_server = ChannelSerializer(many=True)
     total_members = serializers.SerializerMethodField()
     category = CategorySerializer()
 
@@ -47,3 +48,11 @@ class ServerSerializer(serializers.ModelSerializer):
     #     if not total_members:
     #         data.pop("total_members", None)
     #     return data
+
+
+class MessageSeriaLizer(serializers.ModelSerializer):
+    sender = serializers.StringRelatedField()
+
+    class Meta:
+        model = Message
+        fields = ["id", "sender", "content", "timestamp"]

@@ -18,6 +18,7 @@ import Container from "@mui/material/Container";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import { Link } from "@tanstack/react-router";
+
 export default function ExploreServers() {
   const { categoryName } = useParams({ strict: false });
   const category = encodeURIComponent(categoryName);
@@ -36,7 +37,6 @@ export default function ExploreServers() {
   if (error) {
     return <>Error Found </>;
   }
-  console.log(data);
   if (!isPending)
     return (
       <>

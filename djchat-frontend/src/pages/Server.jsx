@@ -1,49 +1,82 @@
-import { useState } from "react";
-import useWebSocket from "react-use-websocket";
+import { Box, CssBaseline, CircularProgress } from "@mui/material";
+import PrimaryAppBar from "./templates/PrimaryAppBar";
+import PrimaryDrawer from "./templates/PrimaryDrawer";
+import SecondaryDrawer from "./templates/SecondaryDrawer";
+import ServerChannels from "../components/SecondaryDrawer/ServerChannels";
+import MessageInterface from "../components/Main/MessageInterface";
+import ExploreCategories from "../components/SecondaryDrawer/ExploreCategories";
+import MainSection from "./templates/MainSection";
+import UserServers from "../components/PrimaryDrawer/UserServers";
+import { useNavigate } from "@tanstack/react-router";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import { useParams } from "@tanstack/react-router";
 
 export default function Server() {
-  const socketUrl = "ws://127.0.0.1:8000/ws/test";
-  const [inputValue, setInputValue] = useState("");
-  const [newMessage, setNewMessage] = useState([]);
-  const { sendJsonMessage } = useWebSocket(socketUrl, {
-    onOpen: () => console.log("connected"),
-    onClose: () => console.log("disconnected"),
-    onError: () => console.log("Error occured"),
-    onMessage: (msg) => {
-      const textVal = msg.data;
-      const parsed = JSON.parse(textVal);
-      const newM = parsed.new_message;
-      setNewMessage([...newMessage, newM]);
-    },
+  const navigate_initiator = useNavigate();
+  const { server_id, channel_id } = useParams({ strict: false });
+  const queryUrl = `/api/server/select/${server_id}`;
+  const { isLoading, error, data } = useQuery({
+    queryKey: ["api/server/", server_id],
+    queryFn: () =>
+      axios.get(queryUrl).then((res) => {
+        const dataArray = [res.data];
+        return dataArray;
+      }),
+    staleTime: 20000,
   });
-  function handleInput(e) {
-    setInputValue(e.target.value);
-  }
-  function handleSubmit() {
-    if (!(inputValue === "" || !inputValue)) {
-      sendJsonMessage({
-        type: "message",
-        message: inputValue,
-      });
-      setInputValue("");
+
+  function isChannel() {
+    if (isLoading || !channel_id) {
+      return true;
     }
+    const channels = data[0].channel_server;
+    return channels.some((channel) => channel.id === parseInt(channel_id));
+  }
+  if (error) {
+    console.log(error.message);
+    navigate_initiator({ to: "/" });
+  }
+  if (!isChannel()) {
+    navigate_initiator({ to: `/server/${server_id}` });
   }
   return (
     <>
-      <h2>Hello from ChatRoom</h2>
-      <div>
-        {newMessage.map((msg, index) => {
-          return (
-            <div key={index}>
-              <p>{msg}</p>
-            </div>
-          );
-        })}
-        <input value={inputValue} type="text" onChange={handleInput}></input>
-        <button type="submit" onClick={handleSubmit}>
-          Send
-        </button>
-      </div>
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <PrimaryAppBar />
+        <PrimaryDrawer>
+          {isLoading ? <LoadingComponent /> : <UserServers data={data} />}
+        </PrimaryDrawer>
+        <SecondaryDrawer>
+          {isLoading ? (
+            <LoadingComponent />
+          ) : (
+            <ServerChannels data={data[0].channel_server} />
+          )}
+        </SecondaryDrawer>
+        <MainSection>
+          {isLoading ? <LoadingComponent /> : <MessageInterface />}
+        </MainSection>
+      </Box>
+    </>
+  );
+}
+
+export function LoadingComponent() {
+  return (
+    <>
+      <Box
+        sx={{
+          height: 50,
+          p: 2,
+          display: "flex",
+          alignItems: "center",
+          flex: "1 1 100%",
+        }}
+      >
+        <CircularProgress />
+      </Box>
     </>
   );
 }

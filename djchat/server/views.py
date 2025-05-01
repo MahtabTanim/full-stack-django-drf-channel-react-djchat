@@ -1,10 +1,11 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Server, Category
-from .serializers import ServerSerializer, CategorySerializer
+from .models import Server, Category, Channel
+from .serializers import ServerSerializer, CategorySerializer, MessageSeriaLizer
 from rest_framework.exceptions import AuthenticationFailed
 from . import schema
+from webchat.models import Message, Conversation
 
 # Create your views here.
 
@@ -74,3 +75,23 @@ class ServerListViewSet(ModelViewSet):
 class CategoryListViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+
+class MessageListViewSet(ModelViewSet):
+    serializer_class = MessageSeriaLizer
+    queryset = Message.objects.all()
+
+    def get_queryset(self):
+        try:
+            channel_id = self.request.query_params.get("channel_id")
+            channel = Channel.objects.get(id=channel_id)
+            conversation = Conversation.objects.get(channel_id=channel)
+            messages = conversation.converstation_message.all()
+            return messages
+        except Conversation.DoesNotExist:
+            return []
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)

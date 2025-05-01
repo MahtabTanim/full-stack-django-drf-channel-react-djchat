@@ -9,11 +9,10 @@ import {
   Typography,
   ListItemText,
 } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
-import { Link } from "@tanstack/react-router";
-import axios from "axios";
 
-export default function PopularChannels({ primaryDrawerStatus }) {
+import { Link } from "@tanstack/react-router";
+
+export default function UserServers({ primaryDrawerStatus, data = [] }) {
   const boxStyles = {
     height: 50,
     p: 2,
@@ -21,17 +20,6 @@ export default function PopularChannels({ primaryDrawerStatus }) {
     alignItems: "center",
     flex: "1 1 100%",
   };
-  const { isLoading, error, data } = useQuery({
-    queryKey: ["api/server/all"],
-    queryFn: () =>
-      axios.get("/api/server/select/").then((res) => {
-        return res.data;
-      }),
-    staleTime: 30000,
-  });
-
-  if (isLoading) return <Typography>Loading...</Typography>;
-  if (error) return <Typography>Error loading Categories</Typography>;
 
   return (
     <>
@@ -42,7 +30,7 @@ export default function PopularChannels({ primaryDrawerStatus }) {
           }}
           component={"div"}
         >
-          Popular Channels
+          Server
         </Typography>
       </Box>
       <List>

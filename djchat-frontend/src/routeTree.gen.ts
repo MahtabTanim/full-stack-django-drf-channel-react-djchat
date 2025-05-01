@@ -11,18 +11,13 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as ServerImport } from './routes/server'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
+import { Route as ServerServeridImport } from './routes/server.$server_id'
 import { Route as ExploreCategoryNameImport } from './routes/explore/$categoryName'
+import { Route as ServerServeridChannelidImport } from './routes/server_.$server_id.$channel_id'
 
 // Create/Update Routes
-
-const ServerRoute = ServerImport.update({
-  id: '/server',
-  path: '/server',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const AboutRoute = AboutImport.update({
   id: '/about',
@@ -36,9 +31,21 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const ServerServeridRoute = ServerServeridImport.update({
+  id: '/server/$server_id',
+  path: '/server/$server_id',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const ExploreCategoryNameRoute = ExploreCategoryNameImport.update({
   id: '/explore/$categoryName',
   path: '/explore/$categoryName',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ServerServeridChannelidRoute = ServerServeridChannelidImport.update({
+  id: '/server_/$server_id/$channel_id',
+  path: '/server/$server_id/$channel_id',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -60,18 +67,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutImport
       parentRoute: typeof rootRoute
     }
-    '/server': {
-      id: '/server'
-      path: '/server'
-      fullPath: '/server'
-      preLoaderRoute: typeof ServerImport
-      parentRoute: typeof rootRoute
-    }
     '/explore/$categoryName': {
       id: '/explore/$categoryName'
       path: '/explore/$categoryName'
       fullPath: '/explore/$categoryName'
       preLoaderRoute: typeof ExploreCategoryNameImport
+      parentRoute: typeof rootRoute
+    }
+    '/server/$server_id': {
+      id: '/server/$server_id'
+      path: '/server/$server_id'
+      fullPath: '/server/$server_id'
+      preLoaderRoute: typeof ServerServeridImport
+      parentRoute: typeof rootRoute
+    }
+    '/server_/$server_id/$channel_id': {
+      id: '/server_/$server_id/$channel_id'
+      path: '/server/$server_id/$channel_id'
+      fullPath: '/server/$server_id/$channel_id'
+      preLoaderRoute: typeof ServerServeridChannelidImport
       parentRoute: typeof rootRoute
     }
   }
@@ -82,46 +96,67 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/server': typeof ServerRoute
   '/explore/$categoryName': typeof ExploreCategoryNameRoute
+  '/server/$server_id': typeof ServerServeridRoute
+  '/server/$server_id/$channel_id': typeof ServerServeridChannelidRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/server': typeof ServerRoute
   '/explore/$categoryName': typeof ExploreCategoryNameRoute
+  '/server/$server_id': typeof ServerServeridRoute
+  '/server/$server_id/$channel_id': typeof ServerServeridChannelidRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/server': typeof ServerRoute
   '/explore/$categoryName': typeof ExploreCategoryNameRoute
+  '/server/$server_id': typeof ServerServeridRoute
+  '/server_/$server_id/$channel_id': typeof ServerServeridChannelidRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/server' | '/explore/$categoryName'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/explore/$categoryName'
+    | '/server/$server_id'
+    | '/server/$server_id/$channel_id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/server' | '/explore/$categoryName'
-  id: '__root__' | '/' | '/about' | '/server' | '/explore/$categoryName'
+  to:
+    | '/'
+    | '/about'
+    | '/explore/$categoryName'
+    | '/server/$server_id'
+    | '/server/$server_id/$channel_id'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/explore/$categoryName'
+    | '/server/$server_id'
+    | '/server_/$server_id/$channel_id'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  ServerRoute: typeof ServerRoute
   ExploreCategoryNameRoute: typeof ExploreCategoryNameRoute
+  ServerServeridRoute: typeof ServerServeridRoute
+  ServerServeridChannelidRoute: typeof ServerServeridChannelidRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  ServerRoute: ServerRoute,
   ExploreCategoryNameRoute: ExploreCategoryNameRoute,
+  ServerServeridRoute: ServerServeridRoute,
+  ServerServeridChannelidRoute: ServerServeridChannelidRoute,
 }
 
 export const routeTree = rootRoute
@@ -136,8 +171,9 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/about",
-        "/server",
-        "/explore/$categoryName"
+        "/explore/$categoryName",
+        "/server/$server_id",
+        "/server_/$server_id/$channel_id"
       ]
     },
     "/": {
@@ -146,11 +182,14 @@ export const routeTree = rootRoute
     "/about": {
       "filePath": "about.jsx"
     },
-    "/server": {
-      "filePath": "server.jsx"
-    },
     "/explore/$categoryName": {
       "filePath": "explore/$categoryName.jsx"
+    },
+    "/server/$server_id": {
+      "filePath": "server.$server_id.jsx"
+    },
+    "/server_/$server_id/$channel_id": {
+      "filePath": "server_.$server_id.$channel_id.jsx"
     }
   }
 }
