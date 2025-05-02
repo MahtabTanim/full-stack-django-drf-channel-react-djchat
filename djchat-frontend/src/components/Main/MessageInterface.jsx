@@ -1,9 +1,25 @@
+import {
+  Box,
+  Typography,
+  List,
+  ListItem,
+  ListItemAvatar,
+  Avatar,
+  ListItemText,
+  TextField,
+} from "@mui/material";
 import { useState } from "react";
 import useWebSocket from "react-use-websocket";
 import { useParams } from "@tanstack/react-router";
 import axios from "axios";
+import MessageInterfaceChannels from "./MessageInterfaceChannels";
+import { useTheme } from "@mui/material";
+import Scroll from "./Scroller";
 
-export default function MessageInterface() {
+export default function MessageInterface(data) {
+  const theme = useTheme();
+  const server_name = data.data?.[0]?.name ?? "Server";
+  const server_description = data.data?.[0]?.description ?? "Welcome to Server";
   const { server_id, channel_id } = useParams({ strict: false });
   const socketUrl = channel_id
     ? `ws://127.0.0.1:8000/${server_id}/${channel_id}`
@@ -35,6 +51,11 @@ export default function MessageInterface() {
   function handleInput(e) {
     setInputValue(e.target.value);
   }
+  function handleKeyDown(e) {
+    if (e.key === "Enter") {
+      handleSubmit(e);
+    }
+  }
   function handleSubmit(e) {
     e.preventDefault();
     if (!(inputValue === "" || !inputValue)) {
@@ -45,29 +66,151 @@ export default function MessageInterface() {
       setInputValue("");
     }
   }
+  console.log(data);
+  function formatTimeStamp(timestamp) {
+    const date = new Date(Date.parse(timestamp));
+    const formattedDate = `${
+      date.getMonth() + 1
+    }/${date.getDate()}/${date.getFullYear()}`;
+
+    const formattedTime = date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+
+    return `${formattedDate} at ${formattedTime}`;
+  }
   return (
     <>
-      <h2>Hello from ChatRoom</h2>
-      <div>
-        {newMessage.map((msg, index) => {
-          return (
-            <div key={index}>
-              <p>{msg.sender}</p>
-              <p>{msg.content}</p>
-            </div>
-          );
-        })}
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="message">Enter Your Text </label>
-          <input
-            name="message"
-            value={inputValue}
-            type="text"
-            onChange={handleInput}
-          ></input>
-          <button type="submit">Send</button>
-        </form>
-      </div>
+      <MessageInterfaceChannels data={data} />
+      {channel_id === undefined ? (
+        <Box
+          sx={{
+            overflow: "hidden",
+            p: { xs: 0 },
+            height: "80vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              textAlign: "center",
+            }}
+          >
+            <Typography
+              variant="h4"
+              fontWeight={700}
+              letterSpacing="-0.5px"
+              maxWidth="600px"
+            >
+              Welcome to {server_name}
+            </Typography>
+            <Typography sx={{ mt: 1 }}>{server_description}</Typography>
+          </Box>
+        </Box>
+      ) : (
+        <div>
+          <Box
+            sx={{
+              overflow: "hidden",
+              p: 0,
+              height: `calc(100vh - 190px)`,
+            }}
+          >
+            <Scroll>
+              <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+                {newMessage.map((msg, index) => {
+                  return (
+                    <ListItem key={index} alignItems="flex-start">
+                      <ListItemAvatar>
+                        <Avatar alt="user image" />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primaryTypographyProps={{
+                          fontSize: "12px",
+                          variant: "body2",
+                        }}
+                        primary={
+                          <>
+                            <Typography
+                              component="span"
+                              variant="body1"
+                              color="text.primary"
+                              sx={{ display: "inline", fontW: 600 }}
+                            >
+                              {msg.sender}
+                            </Typography>
+                            <Typography
+                              component="span"
+                              variant="caption"
+                              color="textSecondary"
+                            >
+                              {" at "}
+                              {formatTimeStamp(msg.timestamp)}
+                            </Typography>
+                          </>
+                        }
+                        secondary={
+                          <>
+                            <Typography
+                              variant="body1"
+                              style={{
+                                overflow: "visible",
+                                whiteSpace: "normal",
+                                textOverflow: "clip",
+                              }}
+                              sx={{
+                                display: "inline",
+                                lineHeight: 1.2,
+                                fontWeight: 400,
+                                letterSpacing: "-0.2px",
+                              }}
+                              component="span"
+                              color="text.primary"
+                            >
+                              {msg.content}
+                            </Typography>
+                          </>
+                        }
+                      />
+                    </ListItem>
+                  );
+                })}
+              </List>
+            </Scroll>
+          </Box>
+          <Box sx={{ position: "sticky", bottom: 0, width: "100%" }}></Box>
+          <form
+            onSubmit={handleSubmit}
+            style={{
+              bottom: 0,
+              right: 0,
+              padding: "1rem",
+              backgroundColor: theme.palette.background.default,
+              zIndex: 1,
+            }}
+          >
+            <Box sx={{ display: "flex" }}>
+              <TextField
+                fullWidth
+                multiline
+                value={inputValue}
+                minRows={1}
+                maxRows={4}
+                onKeyDown={handleKeyDown}
+                onChange={handleInput}
+                sx={{ flexGrow: 1 }}
+              />
+            </Box>
+          </form>
+        </div>
+      )}
     </>
   );
 }

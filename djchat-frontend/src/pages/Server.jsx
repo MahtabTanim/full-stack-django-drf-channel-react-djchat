@@ -56,7 +56,7 @@ export default function Server() {
           )}
         </SecondaryDrawer>
         <MainSection>
-          {isLoading ? <LoadingComponent /> : <MessageInterface />}
+          {isLoading ? <LoadingComponent /> : <MessageInterface data={data} />}
         </MainSection>
       </Box>
     </>

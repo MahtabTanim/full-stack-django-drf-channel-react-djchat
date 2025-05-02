@@ -11,8 +11,7 @@ export default function MainSection({ children }) {
           mt: `${theme.primaryAppBar.height}px`,
           height: `calc(100vh - ${theme.primaryAppBar.height}px)`,
           borderRight: `1px solid ${theme.palette.divider}`,
-          display: { xs: "none", sm: "block" },
-          overflow: "auto",
+          overflow: "hidden",
         }}
       >
         {children}

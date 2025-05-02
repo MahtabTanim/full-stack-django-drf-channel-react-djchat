@@ -84,8 +84,14 @@ class MessageListViewSet(ModelViewSet):
     def get_queryset(self):
         try:
             channel_id = self.request.query_params.get("channel_id")
+            if not channel_id:
+                return []
             channel = Channel.objects.get(id=channel_id)
+            if not channel:
+                return []
             conversation = Conversation.objects.get(channel_id=channel)
+            if not conversation:
+                return []
             messages = conversation.converstation_message.all()
             return messages
         except Conversation.DoesNotExist:
