@@ -11,6 +11,7 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as LoginImport } from './routes/login'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 import { Route as ServerServeridImport } from './routes/server.$server_id'
@@ -18,6 +19,12 @@ import { Route as ExploreCategoryNameImport } from './routes/explore/$categoryNa
 import { Route as ServerServeridChannelidImport } from './routes/server_.$server_id.$channel_id'
 
 // Create/Update Routes
+
+const LoginRoute = LoginImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const AboutRoute = AboutImport.update({
   id: '/about',
@@ -67,6 +74,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutImport
       parentRoute: typeof rootRoute
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginImport
+      parentRoute: typeof rootRoute
+    }
     '/explore/$categoryName': {
       id: '/explore/$categoryName'
       path: '/explore/$categoryName'
@@ -96,6 +110,7 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/login': typeof LoginRoute
   '/explore/$categoryName': typeof ExploreCategoryNameRoute
   '/server/$server_id': typeof ServerServeridRoute
   '/server/$server_id/$channel_id': typeof ServerServeridChannelidRoute
@@ -104,6 +119,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/login': typeof LoginRoute
   '/explore/$categoryName': typeof ExploreCategoryNameRoute
   '/server/$server_id': typeof ServerServeridRoute
   '/server/$server_id/$channel_id': typeof ServerServeridChannelidRoute
@@ -113,6 +129,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/login': typeof LoginRoute
   '/explore/$categoryName': typeof ExploreCategoryNameRoute
   '/server/$server_id': typeof ServerServeridRoute
   '/server_/$server_id/$channel_id': typeof ServerServeridChannelidRoute
@@ -123,6 +140,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/login'
     | '/explore/$categoryName'
     | '/server/$server_id'
     | '/server/$server_id/$channel_id'
@@ -130,6 +148,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/login'
     | '/explore/$categoryName'
     | '/server/$server_id'
     | '/server/$server_id/$channel_id'
@@ -137,6 +156,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/login'
     | '/explore/$categoryName'
     | '/server/$server_id'
     | '/server_/$server_id/$channel_id'
@@ -146,6 +166,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  LoginRoute: typeof LoginRoute
   ExploreCategoryNameRoute: typeof ExploreCategoryNameRoute
   ServerServeridRoute: typeof ServerServeridRoute
   ServerServeridChannelidRoute: typeof ServerServeridChannelidRoute
@@ -154,6 +175,7 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  LoginRoute: LoginRoute,
   ExploreCategoryNameRoute: ExploreCategoryNameRoute,
   ServerServeridRoute: ServerServeridRoute,
   ServerServeridChannelidRoute: ServerServeridChannelidRoute,
@@ -171,6 +193,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/about",
+        "/login",
         "/explore/$categoryName",
         "/server/$server_id",
         "/server_/$server_id/$channel_id"
@@ -181,6 +204,9 @@ export const routeTree = rootRoute
     },
     "/about": {
       "filePath": "about.jsx"
+    },
+    "/login": {
+      "filePath": "login.jsx"
     },
     "/explore/$categoryName": {
       "filePath": "explore/$categoryName.jsx"

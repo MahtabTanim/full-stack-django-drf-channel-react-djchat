@@ -10,6 +10,7 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import MuiTheme from "./theme/theme";
+import { AuthContextProvider } from "./components/contexts/AuthContext";
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
@@ -22,11 +23,13 @@ const router = createRouter({
 
 export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <ToggleColorMode>
-        <RouterProvider router={router} />
-      </ToggleColorMode>
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+    <AuthContextProvider>
+      <QueryClientProvider client={queryClient}>
+        <ToggleColorMode>
+          <RouterProvider router={router} />
+        </ToggleColorMode>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </AuthContextProvider>
   );
 }

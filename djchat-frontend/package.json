@@ -20,6 +20,7 @@
     "@tanstack/react-router": "^1.116.0",
     "@tanstack/react-router-devtools": "^1.116.0",
     "axios": "^1.8.4",
+    "formik": "^2.4.6",
     "js-cookie": "^3.0.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

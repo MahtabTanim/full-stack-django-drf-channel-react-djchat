@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     # 3rd party
     "corsheaders",
     "rest_framework",
+    "rest_framework_simplejwt",
     "drf_spectacular",
 ]
 
@@ -117,6 +118,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = "static/"
+STATICFILES_DIRS = [
+    "/static",
+]
 
 # media section
 
@@ -133,6 +138,7 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.SessionAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
 }
 
