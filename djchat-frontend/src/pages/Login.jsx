@@ -15,7 +15,7 @@ export default function Login() {
       if (!res || !res.success) {
         console.log("login failed");
       } else {
-        navigattor({ to: "/" });
+        navigattor({ to: "/testlogin" });
       }
     },
   });

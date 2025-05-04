@@ -6,8 +6,11 @@ from server.views import ServerListViewSet, CategoryListViewSet, MessageListView
 from django.conf import settings
 from django.conf.urls.static import static
 from webchat.consumer import WebChatConsumer
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from account.views import UserListViewSet
+from account.views import (
+    UserListViewSet,
+    JWTCookieTokenObtainPairView,
+    JWTCookieTokenRefreshView,
+)
 
 router = DefaultRouter()
 router.register("api/server/select", ServerListViewSet, basename="server")
@@ -18,8 +21,12 @@ router.register("api/user", UserListViewSet, basename="user_list")
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
-    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("api/token/refresh", TokenRefreshView.as_view(), name="token_refresh"),
+    path(
+        "api/token/", JWTCookieTokenObtainPairView.as_view(), name="token_obtain_pair"
+    ),
+    path(
+        "api/token/refresh", JWTCookieTokenRefreshView.as_view(), name="token_refresh"
+    ),
     path(
         "api/schema/ui/",
         SpectacularSwaggerView.as_view(url_name="schema"),
@@ -30,7 +37,6 @@ urlpatterns = [
 websocketURLPatterns = [
     path("<str:server_id>/<str:channel_id>", WebChatConsumer.as_asgi()),
 ]
-
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
