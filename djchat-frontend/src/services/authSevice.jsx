@@ -9,32 +9,28 @@ export default function useAuthService() {
     }
     return false;
   });
-
-  // const getUserFromToken = (access = "") => {
-  //   const tokenParts = access.split(".");
-  //   const getEndcodedDetails = tokenParts[1];
-  //   const getDecodedDetails = atob(getEndcodedDetails);
-  //   return JSON.parse(getDecodedDetails).user_id;
-  // };
-  // const getUserDetails = async (id, access) => {
-  //   const url = `api/user/${id}`;
-  //   const result = await axios
-  //     .get(url, {
-  //       headers: {
-  //         Authorization: `Bearer ${access}`,
-  //       },
-  //     })
-  //     .then((response) => {
-  //       setIsLoggedIn(true);
-  //       localStorage.setItem("username", response.data.username);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       setIsLoggedIn(false);
-  //       localStorage.setItem("isLoggedIn", false);
-  //       console.log("Error occured , username not found");
-  //     });
-  // };
+  const getUserDetails = async (id) => {
+    const url = `api/user/${id}`;
+    const result = await axios
+      .get(url, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        localStorage.setItem("isLoggedIn", true);
+        setIsLoggedIn(true);
+        localStorage.setItem("user_id", id);
+        localStorage.setItem("username", response.data.username);
+        return true;
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoggedIn(false);
+        localStorage.setItem("isLoggedIn", false);
+        console.log("Error occured , username not found");
+        return false;
+      });
+    return result;
+  };
   const login = async (username, password) => {
     const result = await axios
       .post(
@@ -47,8 +43,10 @@ export default function useAuthService() {
       )
       .then((response) => {
         setIsLoggedIn(true);
-        localStorage.setItem("isLoggedIn", true);
-        return { success: true, data: response.data };
+        const { user_id } = response.data;
+        if (getUserDetails(user_id))
+          return { success: true, data: response.data };
+        return { success: false, messsage: err.messsage || "error" };
       })
       .catch((err) => {
         setIsLoggedIn(false);
@@ -58,10 +56,22 @@ export default function useAuthService() {
 
     return result;
   };
-
-  const logout = () => {
-    setIsLoggedIn(false);
-    localStorage.setItem("isLoggedIn", false);
+  const refreshAccessToken = async () => {
+    try {
+      await axios.post("/api/token/refresh", {}, { withCredentials: true });
+    } catch (refreshError) {
+      return Promise.reject(refreshError);
+    }
   };
-  return { login, logout, isLoggedIn };
+  const logout = async (navigate) => {
+    localStorage.setItem("isLoggedIn", false);
+    setIsLoggedIn(false);
+    localStorage.removeItem("user_id");
+    localStorage.removeItem("username");
+    axios.post("/api/logout", {}, { withCredentials: true });
+    if (navigate) {
+      navigate({ to: "/login" });
+    }
+  };
+  return { login, logout, isLoggedIn, refreshAccessToken };
 }

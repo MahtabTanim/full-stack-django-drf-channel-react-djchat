@@ -9,45 +9,29 @@ import {
   TextField,
 } from "@mui/material";
 import { useState } from "react";
-import useWebSocket from "react-use-websocket";
+
 import { useParams } from "@tanstack/react-router";
-import axios from "axios";
+
 import MessageInterfaceChannels from "./MessageInterfaceChannels";
 import { useTheme } from "@mui/material";
 import Scroll from "./Scroller";
 
+import useChatWebSocket from "../../services/chatService";
 export default function MessageInterface(data) {
+  //////////////////////////
+  /////////////////////////
+
   const theme = useTheme();
   const server_name = data.data?.[0]?.name ?? "Server";
   const server_description = data.data?.[0]?.description ?? "Welcome to Server";
   const { server_id, channel_id } = useParams({ strict: false });
-  const socketUrl = channel_id
-    ? `ws://127.0.0.1:8000/${server_id}/${channel_id}`
-    : null;
-  const messageUrl = `/api/messages/?channel_id=${channel_id}`;
-  const [inputValue, setInputValue] = useState("");
-  const [newMessage, setNewMessage] = useState([]);
 
-  const { sendJsonMessage } = useWebSocket(socketUrl, {
-    onOpen: async () => {
-      console.log("connected");
-      try {
-        const response = await axios.get(messageUrl);
-        const textVal = response.data;
-        setNewMessage(textVal);
-      } catch (error) {
-        console.error(error);
-        setNewMessage([]);
-      }
-    },
-    onClose: () => console.log("disconnected"),
-    onError: () => console.log("Error occured"),
-    onMessage: (msg) => {
-      const textVal = msg.data;
-      const parsed = JSON.parse(textVal).new_message;
-      setNewMessage([...newMessage, parsed]);
-    },
-  });
+  const { sendJsonMessage, newMessage } = useChatWebSocket(
+    channel_id,
+    server_id,
+  );
+  const [inputValue, setInputValue] = useState("");
+
   function handleInput(e) {
     setInputValue(e.target.value);
   }

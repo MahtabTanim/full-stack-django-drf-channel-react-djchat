@@ -10,6 +10,7 @@ from account.views import (
     UserListViewSet,
     JWTCookieTokenObtainPairView,
     JWTCookieTokenRefreshView,
+    LogOutApiView,
 )
 
 router = DefaultRouter()
@@ -27,6 +28,7 @@ urlpatterns = [
     path(
         "api/token/refresh", JWTCookieTokenRefreshView.as_view(), name="token_refresh"
     ),
+    path("api/logout", LogOutApiView.as_view(), name="logout-"),
     path(
         "api/schema/ui/",
         SpectacularSwaggerView.as_view(url_name="schema"),
