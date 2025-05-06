@@ -14,12 +14,11 @@ import { useTheme } from "@mui/material";
 import ServerChannels from "../SecondaryDrawer/ServerChannels";
 import { useState, useEffect } from "react";
 import { useMediaQuery } from "@mui/material";
+import JoinServer from "../JoinServer/JoinServerButton";
 export default function MessageInterfaceChannels({ data }) {
-  console.log(data);
   const theme = useTheme();
   const { server_id, channel_id } = useParams({ strict: false });
   const server = data.data;
-  console.log(server);
   const channels = server?.[0]?.channel_server ?? [];
   let channel_name = "Home";
   channels.map((channel) => {
@@ -83,6 +82,7 @@ export default function MessageInterfaceChannels({ data }) {
             {channel_name}
           </Typography>
           <Box sx={{ flexGrow: 1 }}></Box>
+          <JoinServer />
           <Box sx={{ display: { xs: "block", sm: "none" } }}>
             <IconButton color="inherit" edge="end" onClick={toggleSideMenu}>
               <MoreVertIcon />

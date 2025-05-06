@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useNavigate } from "@tanstack/react-router";
 import useAuthService from "../../services/authSevice";
+
 export default function useJwtInterceptor() {
   const navigattor = useNavigate();
   const { logout } = useAuthService();

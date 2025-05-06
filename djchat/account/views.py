@@ -20,14 +20,7 @@ class UserListViewSet(ModelViewSet):
     permission_classes = [
         IsAuthenticated,
     ]
-
-    def get_queryset(self):
-        try:
-            user_id = self.request.query_params.get("user_id")
-            if not user_id:
-                return User.objects.all()
-        except User.DoesNotExist:
-            return []
+    http_method_names = ["get", "post"]
 
 
 class JwtSetCookieMixin:

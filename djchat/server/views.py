@@ -1,4 +1,5 @@
-from rest_framework.viewsets import ModelViewSet
+from django.shortcuts import get_object_or_404
+from rest_framework.viewsets import ViewSet, ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Server, Category, Channel
@@ -6,13 +7,86 @@ from .serializers import ServerSerializer, CategorySerializer, MessageSeriaLizer
 from rest_framework.exceptions import AuthenticationFailed
 from . import schema
 from webchat.models import Message, Conversation
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
+
 
 # Create your views here.
+class ServerMembershipViewset(ViewSet):
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request, server_id):
+        server = get_object_or_404(Server, id=server_id)
+        user = request.user
+        if server is not None and user is not None:
+            if server.member.filter(id=user.id).exists():
+                return Response(
+                    {"message": "User already in the Server"},
+                    status=status.HTTP_409_CONFLICT,
+                )
+            server.member.add(user)
+            return Response(
+                {"message": "User successfully added in the Server"},
+                status=status.HTTP_201_CREATED,
+            )
+        return Response(
+            {"message": "User/Server not found"},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+
+    @action(
+        detail=False,
+        methods=[
+            "DELETE",
+        ],
+    )
+    def remove_member(self, request, server_id=None):
+        server = get_object_or_404(Server, id=server_id)
+        user = request.user
+        if server is not None and user is not None:
+            print(user, server.owner)
+            if user == server.owner:
+                return Response(
+                    {"message": "Owner cant leave the server"},
+                    status=status.HTTP_409_CONFLICT,
+                )
+            if not server.member.filter(id=user.id).exists():
+                return Response(
+                    {"message": "User Not Found"},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+            server.member.remove(user)
+            return Response(
+                {"message": "User successfully removed from the Server"},
+                status=status.HTTP_200_OK,
+            )
+        return Response(
+            {"message": "User/Server not found"},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+
+    @action(
+        detail=False,
+        methods=[
+            "GET",
+        ],
+    )
+    def is_member(self, request, server_id=None):
+        server = get_object_or_404(Server, id=server_id)
+        user = request.user
+        if server is not None and user is not None:
+            status = server.member.filter(id=user.id).exists()
+            return Response({"is_member": status})
+        return Response(
+            {"message": "User/Server not found"},
+            status=status.HTTP_404_NOT_FOUND,
+        )
 
 
 class ServerListViewSet(ModelViewSet):
     queryset = Server.objects.all()
     serializer_class = ServerSerializer
+    http_method_names = ["get", "post"]
 
     @schema.sever_list_params
     def list(self, request):
@@ -75,11 +149,13 @@ class ServerListViewSet(ModelViewSet):
 class CategoryListViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    http_method_names = ["get", "post"]
 
 
 class MessageListViewSet(ModelViewSet):
     serializer_class = MessageSeriaLizer
     queryset = Message.objects.all()
+    http_method_names = ["get", "post"]
 
     def get_queryset(self):
         try:

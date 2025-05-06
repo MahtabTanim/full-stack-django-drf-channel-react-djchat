@@ -2,9 +2,10 @@ import { useFormik } from "formik";
 import { useAuthContext } from "../components/contexts/AuthContext";
 import { useNavigate } from "@tanstack/react-router";
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
-export default function Login() {
+
+export default function Register() {
   const navigattor = useNavigate();
-  const { login } = useAuthContext();
+  const { register } = useAuthContext();
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -22,14 +23,14 @@ export default function Login() {
     },
     onSubmit: async (values) => {
       const { username, password } = values;
-      const res = await login(username, password);
+      const res = await register(username, password);
       if (!res || !res.success) {
         formik.setErrors({
           username: "Invalid username or password",
           password: "Invalid username or password",
         });
       } else {
-        navigattor({ to: "/" });
+        navigattor({ to: "/login" });
       }
     },
   });
@@ -52,7 +53,7 @@ export default function Login() {
             pb: 2,
           }}
         >
-          Sign in
+          Register
         </Typography>
         <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 1 }}>
           <TextField

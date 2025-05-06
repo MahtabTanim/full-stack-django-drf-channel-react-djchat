@@ -1,7 +1,7 @@
 from channels.generic.websocket import JsonWebsocketConsumer
 from asgiref.sync import async_to_sync
 from .models import Conversation, Message
-from server.models import Channel
+from server.models import Channel, Server
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -19,12 +19,17 @@ class WebChatConsumer(JsonWebsocketConsumer):
         if not self.user.is_authenticated:
             return self.close(code=4001)
         self.channel_id = self.scope["url_route"]["kwargs"]["channel_id"]
+        self.server_id = self.scope["url_route"]["kwargs"]["server_id"]
+        server = Server.objects.get(id=self.server_id)
+        self.is_member = server.member.filter(id=self.user.id).exists()
         async_to_sync(self.channel_layer.group_add)(
             self.channel_id,
             self.channel_name,
         )
 
     def receive_json(self, content=None):
+        if not self.is_member:
+            return
         channel_id = self.channel_id
         sender = self.user
         message = content["message"]

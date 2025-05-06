@@ -10,7 +10,7 @@ export default function useAuthService() {
     return false;
   });
   const getUserDetails = async (id) => {
-    const url = `api/user/${id}`;
+    const url = `api/user/${id}/`;
     const result = await axios
       .get(url, {
         withCredentials: true,
@@ -31,6 +31,27 @@ export default function useAuthService() {
       });
     return result;
   };
+
+  const register = async (username, password) => {
+    const result = await axios
+      .post(
+        "api/user/",
+        {
+          username,
+          password,
+        },
+        { withCredentials: true },
+      )
+      .then((response) => {
+        return { success: true, data: response.data };
+      })
+      .catch((err) => {
+        return { success: false, messsage: err || "error" };
+      });
+
+    return result;
+  };
+
   const login = async (username, password) => {
     const result = await axios
       .post(
@@ -73,5 +94,5 @@ export default function useAuthService() {
       navigate({ to: "/login" });
     }
   };
-  return { login, logout, isLoggedIn, refreshAccessToken };
+  return { register, login, logout, isLoggedIn, refreshAccessToken };
 }

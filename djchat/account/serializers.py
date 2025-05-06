@@ -11,9 +11,22 @@ from django.conf import settings
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = [
-            "username",
-        ]
+        fields = ["username", "password"]
+        extra_kwargs = {"password": {"write_only": True}}
+
+    def to_representation(self, instance):
+        request = self.context.get("request")
+        if request and request.method == "GET":
+            return {"username": instance.username}
+        return super().to_representation(instance)
+
+    def validate(self, attrs):
+        if self.context["request"].method == "POST":
+            if not attrs.get("username"):
+                raise serializers.ValidationError("Username is required.")
+            if not attrs.get("password"):
+                raise serializers.ValidationError("Password is required.")
+        return attrs
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):

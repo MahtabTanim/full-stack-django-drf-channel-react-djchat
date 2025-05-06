@@ -50,7 +50,6 @@ export default function MessageInterface(data) {
       setInputValue("");
     }
   }
-  console.log(data);
   function formatTimeStamp(timestamp) {
     const date = new Date(Date.parse(timestamp));
     const formattedDate = `${
