@@ -1,7 +1,4 @@
 from pathlib import Path
-
-from decouple import config
-
 import os
 from datetime import timedelta
 import dj_database_url
@@ -19,7 +16,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "insecure-local-key")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG", cast=bool)
+DEBUG = os.environ.get("DEBUG", False)
 
 ALLOWED_HOSTS = ["*"]
 
