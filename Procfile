@@ -1,1 +1,0 @@
-web: uvicorn djchat.djchat.asgi:application --host=0.0.0.0 --port=${PORT} --workers 2 --log-level info

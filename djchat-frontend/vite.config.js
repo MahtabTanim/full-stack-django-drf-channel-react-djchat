@@ -8,11 +8,11 @@ export default defineConfig({
     host: "127.0.0.1",
     proxy: {
       "/api": {
-        target: "http://localhost:8000/",
+        target: "https://djchat-backend-5138510de4de.herokuapp.com/",
         changeOrigin: true,
       },
       "/media": {
-        target: "http://localhost:8000",
+        target: "https://djchat-backend-5138510de4de.herokuapp.com/",
         changeOrigin: true,
       },
     },

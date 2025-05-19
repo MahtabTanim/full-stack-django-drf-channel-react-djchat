@@ -10,7 +10,7 @@ export default function useChatWebSocket(channel_id, server_id) {
   const maxAttempts = 4;
   const { logout, refreshAccessToken } = useAuthService();
   const socketUrl = channel_id
-    ? `ws://127.0.0.1:8000/${server_id}/${channel_id}`
+    ? `ws://djchat-backend-5138510de4de.herokuapp.com//${server_id}/${channel_id}`
     : null;
   const messageUrl = `/api/messages/?channel_id=${channel_id}`;
   const [newMessage, setNewMessage] = useState([]);
