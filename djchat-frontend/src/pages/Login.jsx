@@ -1,7 +1,15 @@
 import { useFormik } from "formik";
 import { useAuthContext } from "../components/contexts/AuthContext";
 import { useNavigate } from "@tanstack/react-router";
-import { Box, Button, Container, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  TextField,
+  Typography,
+  Avatar,
+} from "@mui/material";
+import djchatLogo from "../assets/logo.png";
 export default function Login() {
   const navigattor = useNavigate();
   const { login } = useAuthContext();
@@ -39,50 +47,93 @@ export default function Login() {
         sx={{
           marginTop: 8,
           display: "flex",
-          alignItems: "center",
           flexDirection: "column",
+          alignItems: "center",
+          backgroundColor: "#f9f9f9",
+          padding: 4,
+          borderRadius: 3,
+          boxShadow: 3,
         }}
       >
+        <Avatar
+          src={djchatLogo}
+          alt="djchat logo"
+          sx={{
+            width: 64,
+            height: 64,
+            mb: 2,
+          }}
+        />
         <Typography
           variant="h5"
           noWrap
           component="h1"
           sx={{
-            fontWeight: 500,
-            pb: 2,
+            fontWeight: 600,
+            color: "#1a1a1a",
+            mb: 2,
           }}
         >
           Sign in
         </Typography>
-        <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 1 }}>
+        <Box
+          component="form"
+          onSubmit={formik.handleSubmit}
+          sx={{ width: "100%" }}
+        >
           <TextField
             autoFocus
             fullWidth
             id="username"
             name="username"
-            label="username"
+            label="Username"
             value={formik.values.username}
             onChange={formik.handleChange}
             error={!!formik.touched.username && !!formik.errors.username}
             helperText={formik.touched.username && formik.errors.username}
-          ></TextField>
+            sx={{
+              mt: 1,
+              "& .MuiOutlinedInput-root": {
+                borderRadius: 2,
+                backgroundColor: "#fff",
+              },
+            }}
+          />
           <TextField
             margin="normal"
             fullWidth
             id="password"
             name="password"
             type="password"
-            label="password"
+            label="Password"
             value={formik.values.password}
             onChange={formik.handleChange}
             error={!!formik.touched.password && !!formik.errors.password}
             helperText={formik.touched.password && formik.errors.password}
-          ></TextField>
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                borderRadius: 2,
+                backgroundColor: "#fff",
+              },
+            }}
+          />
           <Button
             variant="contained"
             disableElevation
             type="submit"
-            sx={{ mt: 1, mb: 2 }}
+            fullWidth
+            sx={{
+              mt: 3,
+              mb: 2,
+              py: 1.2,
+              backgroundColor: "primary.main",
+              borderRadius: 2,
+              textTransform: "none",
+              fontWeight: 600,
+              ":hover": {
+                backgroundColor: "primary.dark",
+              },
+            }}
           >
             Next
           </Button>

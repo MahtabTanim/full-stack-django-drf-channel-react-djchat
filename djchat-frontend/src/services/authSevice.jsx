@@ -32,13 +32,15 @@ export default function useAuthService() {
     return result;
   };
 
-  const register = async (username, password) => {
+  const register = async (username, password, first_name, last_name) => {
     const result = await axios
       .post(
         "api/user/",
         {
           username,
           password,
+          first_name,
+          last_name,
         },
         { withCredentials: true },
       )

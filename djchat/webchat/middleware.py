@@ -21,7 +21,11 @@ class JWTAuthMiddleWare:
 
     async def __call__(self, scope, recieve, send):
         headers = dict(scope["headers"])
+
         raw_cookie = headers.get(b"cookie", b"").decode()
+        print("---------------------------------****************-------------")
+        print(headers)
+        print("---------------------------------****************-------------")
         cookies = dict(
             item.split("=") for item in raw_cookie.split("; ") if "=" in item
         )
@@ -37,5 +41,7 @@ class JWTAuthMiddleWare:
                 scope["user"] = AnonymousUser()
         else:
             scope["user"] = AnonymousUser()
-
+        print("---------------------------------****************-------------")
+        print(scope["user"])
+        print("---------------------------------****************-------------")
         return await self.app(scope, recieve, send)

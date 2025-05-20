@@ -15,6 +15,12 @@ export default defineConfig({
         target: "https://djchat-backend-5138510de4de.herokuapp.com/",
         changeOrigin: true,
       },
+      "/ws": {
+        target: "wss://djchat-backend-5138510de4de.herokuapp.com",
+        ws: true,
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/ws/, ""),
+      },
     },
   },
   plugins: [

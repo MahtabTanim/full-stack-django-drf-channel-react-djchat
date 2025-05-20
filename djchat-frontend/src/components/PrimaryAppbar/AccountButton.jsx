@@ -2,6 +2,7 @@ import { Box, IconButton, Menu, MenuItem } from "@mui/material";
 import { AccountCircle, Brightness4Rounded } from "@mui/icons-material";
 import ModeSwitcher from "./ModeSwitcher";
 import { useState } from "react";
+import LogoutButton from "./LogoutButton";
 
 export default function AccountButton() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -24,6 +25,9 @@ export default function AccountButton() {
       >
         <MenuItem>
           <ModeSwitcher />
+        </MenuItem>
+        <MenuItem>
+          <LogoutButton />
         </MenuItem>
       </Menu>
     );

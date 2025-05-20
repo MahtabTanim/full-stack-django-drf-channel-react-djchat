@@ -17,10 +17,8 @@ import { useTheme } from "@mui/material";
 import Scroll from "./Scroller";
 
 import useChatWebSocket from "../../services/chatService";
-export default function MessageInterface(data) {
-  //////////////////////////
-  /////////////////////////
 
+export default function MessageInterface(data) {
   const theme = useTheme();
   const server_name = data.data?.[0]?.name ?? "Server";
   const server_description = data.data?.[0]?.description ?? "Welcome to Server";

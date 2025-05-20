@@ -1,6 +1,5 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import PrimaryAppBar from "../pages/templates/PrimaryAppBar";
 import { CssBaseline } from "@mui/material";
 
 export const Route = createRootRoute({

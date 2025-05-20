@@ -34,7 +34,6 @@ class JwtSetCookieMixin:
                 samesite=settings.SIMPLE_JWT["JWT_COOKIE_SAMESITE"],
             )
         if response.data.get("access"):
-            print("access is being set")
             response.set_cookie(
                 settings.SIMPLE_JWT["ACCESS_TOKEN_NAME"],
                 response.data["access"],
@@ -51,7 +50,6 @@ class JWTCookieTokenObtainPairView(JwtSetCookieMixin, TokenObtainPairView):
 
 
 class JWTCookieTokenRefreshView(JwtSetCookieMixin, TokenRefreshView):
-    print("being called")
     serializer_class = CustomTokenRefreshSerializer
 
 
