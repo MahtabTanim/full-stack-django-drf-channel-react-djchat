@@ -9,14 +9,17 @@ export default function useChatWebSocket(channel_id, server_id) {
   const navigattor = useNavigate();
   const maxAttempts = 4;
   const { logout, refreshAccessToken } = useAuthService();
-  const socketUrl = channel_id ? `/ws/${server_id}/${channel_id}` : null;
+  // wss://backend.djchat.space/1/2
+  const socketUrl = channel_id
+    ? `wss://backend.djchat.space/${server_id}/${channel_id}`
+    : null;
   const messageUrl = `https://backend.djchat.space/api/messages/?channel_id=${channel_id}`;
   const [newMessage, setNewMessage] = useState([]);
   const { sendJsonMessage } = useWebSocket(socketUrl, {
     onOpen: async () => {
       // console.log("connected");
       try {
-        const response = await axios.get(messageUrl);
+        const response = await axios.get(messageUrl, { withCredentials: true });
         const textVal = response.data;
         setNewMessage(textVal);
       } catch (error) {

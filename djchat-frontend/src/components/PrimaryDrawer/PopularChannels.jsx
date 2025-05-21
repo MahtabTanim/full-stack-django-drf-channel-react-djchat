@@ -25,7 +25,9 @@ export default function PopularChannels({ primaryDrawerStatus }) {
     queryKey: ["api/server/all"],
     queryFn: () =>
       axios
-        .get("https://backend.djchat.space/api/server/select/")
+        .get("https://backend.djchat.space/api/server/select/", {
+          withCredentials: true,
+        })
         .then((res) => {
           return res.data;
         }),

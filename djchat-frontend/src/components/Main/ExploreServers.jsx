@@ -26,7 +26,7 @@ export default function ExploreServers() {
   const { isPending, data, error } = useQuery({
     queryKey: [`api/categories/${category}`],
     queryFn: () =>
-      axios.get(query_string).then((res) => {
+      axios.get(query_string, { withCredentials: true }).then((res) => {
         return res.data;
       }),
     staleTime: 30000,

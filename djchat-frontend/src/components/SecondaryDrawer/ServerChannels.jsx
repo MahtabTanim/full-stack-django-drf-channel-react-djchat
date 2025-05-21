@@ -12,7 +12,6 @@ import {
 import { Link } from "@tanstack/react-router";
 import { useTheme } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 
 export default function ServerChannels({ data = [] }) {
   const theme = useTheme();

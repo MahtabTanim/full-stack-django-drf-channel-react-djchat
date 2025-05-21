@@ -19,7 +19,7 @@ export default function Server() {
   const { isLoading, error, data } = useQuery({
     queryKey: ["api/server/", server_id],
     queryFn: () =>
-      axios.get(queryUrl).then((res) => {
+      axios.get(queryUrl, { withCredentials: true }).then((res) => {
         const dataArray = [res.data];
         return dataArray;
       }),

@@ -21,7 +21,9 @@ export default function ExploreCategories() {
     queryKey: ["api/categories"],
     queryFn: () =>
       axios
-        .get("https://backend.djchat.space/api/categories/select/")
+        .get("https://backend.djchat.space/api/categories/select/", {
+          withCredentials: true,
+        })
         .then((res) => {
           return Array.isArray(res.data) ? res.data : [...res.data];
         }),
