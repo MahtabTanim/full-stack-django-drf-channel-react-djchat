@@ -32,6 +32,8 @@ class JwtSetCookieMixin:
                 max_age=settings.SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"],
                 httponly=True,
                 samesite=settings.SIMPLE_JWT["JWT_COOKIE_SAMESITE"],
+                secure=True,
+                domain=".djchat.space",
             )
         if response.data.get("access"):
             response.set_cookie(
@@ -40,6 +42,8 @@ class JwtSetCookieMixin:
                 max_age=settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
                 httponly=True,
                 samesite=settings.SIMPLE_JWT["JWT_COOKIE_SAMESITE"],
+                secure=True,
+                domain=".djchat.space",
             )
             del response.data["access"]
         return super().finalize_response(request, response, *args, **kwargs)

@@ -144,7 +144,7 @@ SIMPLE_JWT = {
     # cookie
     "ACCESS_TOKEN_NAME": "access",
     "REFRESH_TOKEN_NAME": "refresh",
-    "JWT_COOKIE_SAMESITE": "Lax",
+    "JWT_COOKIE_SAMESITE": "None",
 }
 
 SPECTACULAR_SETTINGS = {
@@ -156,20 +156,15 @@ SPECTACULAR_SETTINGS = {
 
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
+    "https://djchat.space",
+    "https://www.djchat.space",
 ]
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "118.179.94.53:0",
+    "https://djchat.space",
+    "https://www.djchat.space",
 ]
 
 # django channel settings

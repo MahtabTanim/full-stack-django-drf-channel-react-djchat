@@ -12,13 +12,9 @@ export default function useAuthService() {
   const getUserDetails = async (id) => {
     const url = `https://backend.djchat.space/api/user/${id}/`;
     const result = await axios
-      .get(
-        url,
-        {},
-        {
-          withCredentials: true,
-        },
-      )
+      .get(url, {
+        withCredentials: true,
+      })
       .then((response) => {
         localStorage.setItem("isLoggedIn", true);
         setIsLoggedIn(true);

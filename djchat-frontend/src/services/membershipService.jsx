@@ -47,7 +47,6 @@ export default function useMembershipService() {
     try {
       const result = await jwtAxios.get(
         `https://backend.djchat.space/api/membership/${server_id}/membership/is_member/`,
-        {},
         { withCredentials: true },
       );
       setIsloading(false);
