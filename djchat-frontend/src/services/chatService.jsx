@@ -10,7 +10,7 @@ export default function useChatWebSocket(channel_id, server_id) {
   const maxAttempts = 4;
   const { logout, refreshAccessToken } = useAuthService();
   const socketUrl = channel_id ? `/ws/${server_id}/${channel_id}` : null;
-  const messageUrl = `/api/messages/?channel_id=${channel_id}`;
+  const messageUrl = `https://backend.djchat.space/api/messages/?channel_id=${channel_id}`;
   const [newMessage, setNewMessage] = useState([]);
   const { sendJsonMessage } = useWebSocket(socketUrl, {
     onOpen: async () => {

@@ -4,25 +4,6 @@ import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 
 // https://vite.dev/config/
 export default defineConfig({
-  server: {
-    host: "127.0.0.1",
-    proxy: {
-      "/api": {
-        target: "https://djchat-backend-5138510de4de.herokuapp.com/",
-        changeOrigin: true,
-      },
-      "/media": {
-        target: "https://djchat-backend-5138510de4de.herokuapp.com/",
-        changeOrigin: true,
-      },
-      "/ws": {
-        target: "wss://djchat-backend-5138510de4de.herokuapp.com",
-        ws: true,
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/ws/, ""),
-      },
-    },
-  },
   plugins: [
     TanStackRouterVite({
       target: "react",

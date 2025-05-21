@@ -24,7 +24,7 @@ export default function useJwtInterceptor() {
 
         try {
           const refreshResponse = await axios.post(
-            "/api/token/refresh",
+            "https://backend.djchat.space/api/token/refresh",
             { withCredentials: true }, // Ensure cookies are sent
           );
           if (refreshResponse.status === 200) {

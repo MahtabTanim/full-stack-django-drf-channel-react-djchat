@@ -22,7 +22,7 @@ import { Link } from "@tanstack/react-router";
 export default function ExploreServers() {
   const { categoryName } = useParams({ strict: false });
   const category = encodeURIComponent(categoryName);
-  const query_string = `/api/server/select/?category=${category}`;
+  const query_string = `https://backend.djchat.space/api/server/select/?category=${category}`;
   const { isPending, data, error } = useQuery({
     queryKey: [`api/categories/${category}`],
     queryFn: () =>

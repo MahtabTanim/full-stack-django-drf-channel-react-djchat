@@ -15,7 +15,7 @@ import { useParams } from "@tanstack/react-router";
 export default function Server() {
   const navigate_initiator = useNavigate();
   const { server_id, channel_id } = useParams({ strict: false });
-  const queryUrl = `/api/server/select/${server_id}`;
+  const queryUrl = `https://backend.djchat.space/api/server/select/${server_id}`;
   const { isLoading, error, data } = useQuery({
     queryKey: ["api/server/", server_id],
     queryFn: () =>

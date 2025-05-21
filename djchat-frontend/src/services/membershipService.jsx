@@ -12,7 +12,7 @@ export default function useMembershipService() {
     setError(null);
     try {
       const result = await jwtAxios.post(
-        `/api/membership/${server_id}/membership/`,
+        `https://backend.djchat.space/api/membership/${server_id}/membership/`,
         {},
         { withCredentials: true },
       );
@@ -29,7 +29,7 @@ export default function useMembershipService() {
     setError(null);
     try {
       const result = await jwtAxios.delete(
-        `/api/membership/${server_id}/membership/remove_member/`,
+        `https://backend.djchat.space/api/membership/${server_id}/membership/remove_member/`,
         {},
         { withCredentials: true },
       );
@@ -46,7 +46,7 @@ export default function useMembershipService() {
     setError(null);
     try {
       const result = await jwtAxios.get(
-        `/api/membership/${server_id}/membership/is_member/`,
+        `https://backend.djchat.space/api/membership/${server_id}/membership/is_member/`,
         {},
         { withCredentials: true },
       );

@@ -10,11 +10,15 @@ export default function useAuthService() {
     return false;
   });
   const getUserDetails = async (id) => {
-    const url = `api/user/${id}/`;
+    const url = `https://backend.djchat.space/api/user/${id}/`;
     const result = await axios
-      .get(url, {
-        withCredentials: true,
-      })
+      .get(
+        url,
+        {},
+        {
+          withCredentials: true,
+        },
+      )
       .then((response) => {
         localStorage.setItem("isLoggedIn", true);
         setIsLoggedIn(true);
@@ -35,7 +39,7 @@ export default function useAuthService() {
   const register = async (username, password, first_name, last_name) => {
     const result = await axios
       .post(
-        "api/user/",
+        "https://backend.djchat.space/api/user/",
         {
           username,
           password,
@@ -57,7 +61,7 @@ export default function useAuthService() {
   const login = async (username, password) => {
     const result = await axios
       .post(
-        "api/token/",
+        "https://backend.djchat.space/api/token/",
         {
           username,
           password,
@@ -81,7 +85,11 @@ export default function useAuthService() {
   };
   const refreshAccessToken = async () => {
     try {
-      await axios.post("/api/token/refresh", {}, { withCredentials: true });
+      await axios.post(
+        "https://backend.djchat.space/api/token/refresh",
+        {},
+        { withCredentials: true },
+      );
     } catch (refreshError) {
       return Promise.reject(refreshError);
     }
@@ -91,7 +99,11 @@ export default function useAuthService() {
     setIsLoggedIn(false);
     localStorage.removeItem("user_id");
     localStorage.removeItem("username");
-    axios.post("/api/logout", {}, { withCredentials: true });
+    axios.post(
+      "https://backend.djchat.space/api/logout",
+      {},
+      { withCredentials: true },
+    );
     if (navigate) {
       navigate({ to: "/login" });
     }

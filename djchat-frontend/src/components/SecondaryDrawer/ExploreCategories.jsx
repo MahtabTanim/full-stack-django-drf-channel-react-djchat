@@ -20,9 +20,11 @@ export default function ExploreCategories() {
   const { isPending, data, error } = useQuery({
     queryKey: ["api/categories"],
     queryFn: () =>
-      axios.get("/api/categories/select/").then((res) => {
-        return Array.isArray(res.data) ? res.data : [...res.data];
-      }),
+      axios
+        .get("https://backend.djchat.space/api/categories/select/")
+        .then((res) => {
+          return Array.isArray(res.data) ? res.data : [...res.data];
+        }),
     staleTime: 30000,
   });
   const boxStyle = {
