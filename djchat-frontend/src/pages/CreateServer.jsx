@@ -1,12 +1,12 @@
-import { Box, CssBaseline, Button, Container, Typography } from "@mui/material";
+import { Box, CssBaseline } from "@mui/material";
 import PrimaryAppBar from "./templates/PrimaryAppBar";
 import PrimaryDrawer from "./templates/PrimaryDrawer";
 import SecondaryDrawer from "./templates/SecondaryDrawer";
 import PopularChannels from "../components/PrimaryDrawer/PopularChannels";
 import ExploreCategories from "../components/SecondaryDrawer/ExploreCategories";
 import MainSection from "./templates/MainSection";
-import CreateServerButton from "../components/Main/CreateServerButton";
-export default function Homepage() {
+import CreateServerForm from "../components/Main/CreateServerForm";
+export default function CreateServer() {
   return (
     <>
       <Box sx={{ display: "flex" }}>
@@ -19,7 +19,7 @@ export default function Homepage() {
           <ExploreCategories />
         </SecondaryDrawer>
         <MainSection>
-          <CreateServerButton />
+          <CreateServerForm />
         </MainSection>
       </Box>
     </>

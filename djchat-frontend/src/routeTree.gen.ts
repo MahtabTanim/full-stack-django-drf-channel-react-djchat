@@ -11,9 +11,9 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as TestloginImport } from './routes/testlogin'
 import { Route as RegisterImport } from './routes/register'
 import { Route as LoginImport } from './routes/login'
+import { Route as CreateServerImport } from './routes/createServer'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 import { Route as ServerServeridImport } from './routes/server.$server_id'
@@ -21,12 +21,6 @@ import { Route as ExploreCategoryNameImport } from './routes/explore/$categoryNa
 import { Route as ServerServeridChannelidImport } from './routes/server_.$server_id.$channel_id'
 
 // Create/Update Routes
-
-const TestloginRoute = TestloginImport.update({
-  id: '/testlogin',
-  path: '/testlogin',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const RegisterRoute = RegisterImport.update({
   id: '/register',
@@ -37,6 +31,12 @@ const RegisterRoute = RegisterImport.update({
 const LoginRoute = LoginImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CreateServerRoute = CreateServerImport.update({
+  id: '/createServer',
+  path: '/createServer',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -88,6 +88,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutImport
       parentRoute: typeof rootRoute
     }
+    '/createServer': {
+      id: '/createServer'
+      path: '/createServer'
+      fullPath: '/createServer'
+      preLoaderRoute: typeof CreateServerImport
+      parentRoute: typeof rootRoute
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -100,13 +107,6 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterImport
-      parentRoute: typeof rootRoute
-    }
-    '/testlogin': {
-      id: '/testlogin'
-      path: '/testlogin'
-      fullPath: '/testlogin'
-      preLoaderRoute: typeof TestloginImport
       parentRoute: typeof rootRoute
     }
     '/explore/$categoryName': {
@@ -138,9 +138,9 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/createServer': typeof CreateServerRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
-  '/testlogin': typeof TestloginRoute
   '/explore/$categoryName': typeof ExploreCategoryNameRoute
   '/server/$server_id': typeof ServerServeridRoute
   '/server/$server_id/$channel_id': typeof ServerServeridChannelidRoute
@@ -149,9 +149,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/createServer': typeof CreateServerRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
-  '/testlogin': typeof TestloginRoute
   '/explore/$categoryName': typeof ExploreCategoryNameRoute
   '/server/$server_id': typeof ServerServeridRoute
   '/server/$server_id/$channel_id': typeof ServerServeridChannelidRoute
@@ -161,9 +161,9 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/createServer': typeof CreateServerRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
-  '/testlogin': typeof TestloginRoute
   '/explore/$categoryName': typeof ExploreCategoryNameRoute
   '/server/$server_id': typeof ServerServeridRoute
   '/server_/$server_id/$channel_id': typeof ServerServeridChannelidRoute
@@ -174,9 +174,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/createServer'
     | '/login'
     | '/register'
-    | '/testlogin'
     | '/explore/$categoryName'
     | '/server/$server_id'
     | '/server/$server_id/$channel_id'
@@ -184,9 +184,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/createServer'
     | '/login'
     | '/register'
-    | '/testlogin'
     | '/explore/$categoryName'
     | '/server/$server_id'
     | '/server/$server_id/$channel_id'
@@ -194,9 +194,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/createServer'
     | '/login'
     | '/register'
-    | '/testlogin'
     | '/explore/$categoryName'
     | '/server/$server_id'
     | '/server_/$server_id/$channel_id'
@@ -206,9 +206,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  CreateServerRoute: typeof CreateServerRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
-  TestloginRoute: typeof TestloginRoute
   ExploreCategoryNameRoute: typeof ExploreCategoryNameRoute
   ServerServeridRoute: typeof ServerServeridRoute
   ServerServeridChannelidRoute: typeof ServerServeridChannelidRoute
@@ -217,9 +217,9 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  CreateServerRoute: CreateServerRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
-  TestloginRoute: TestloginRoute,
   ExploreCategoryNameRoute: ExploreCategoryNameRoute,
   ServerServeridRoute: ServerServeridRoute,
   ServerServeridChannelidRoute: ServerServeridChannelidRoute,
@@ -237,9 +237,9 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/about",
+        "/createServer",
         "/login",
         "/register",
-        "/testlogin",
         "/explore/$categoryName",
         "/server/$server_id",
         "/server_/$server_id/$channel_id"
@@ -251,14 +251,14 @@ export const routeTree = rootRoute
     "/about": {
       "filePath": "about.jsx"
     },
+    "/createServer": {
+      "filePath": "createServer.jsx"
+    },
     "/login": {
       "filePath": "login.jsx"
     },
     "/register": {
       "filePath": "register.jsx"
-    },
-    "/testlogin": {
-      "filePath": "testlogin.jsx"
     },
     "/explore/$categoryName": {
       "filePath": "explore/$categoryName.jsx"

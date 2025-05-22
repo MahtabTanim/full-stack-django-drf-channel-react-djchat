@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
 import { useAuthContext } from "../components/contexts/AuthContext";
 import { useNavigate } from "@tanstack/react-router";
+
 import {
   Box,
   Button,
@@ -137,6 +138,17 @@ export default function Login() {
           >
             Next
           </Button>
+          <Typography variant="body2" align="center" sx={{ mt: 2 }}>
+            Don't have an account?{" "}
+            <Button
+              onClick={() => {
+                navigattor({ to: "/register" });
+              }}
+              style={{ color: "#1976d2", textDecoration: "none" }}
+            >
+              Register
+            </Button>
+          </Typography>
         </Box>
       </Box>
     </Container>

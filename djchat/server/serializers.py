@@ -42,13 +42,6 @@ class ServerSerializer(serializers.ModelSerializer):
         if obj.pk:
             return obj.member.count()
 
-    # def to_representation(self, instance):
-    #     data = super().to_representation(instance)
-    #     total_members = self.context.get("total_members")
-    #     if not total_members:
-    #         data.pop("total_members", None)
-    #     return data
-
 
 class MessageSeriaLizer(serializers.ModelSerializer):
     sender = serializers.StringRelatedField()

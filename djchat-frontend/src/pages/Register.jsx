@@ -149,6 +149,17 @@ export default function Register() {
           >
             Next
           </Button>
+          <Typography variant="body2" align="center" sx={{ mt: 2 }}>
+            Already have an account?{" "}
+            <Button
+              onClick={() => {
+                navigattor({ to: "/login" });
+              }}
+              style={{ color: "#1976d2", textDecoration: "none" }}
+            >
+              Login
+            </Button>
+          </Typography>
         </Box>
       </Box>
     </Container>

@@ -135,15 +135,15 @@ class ServerListViewSet(ModelViewSet):
         ).data
         return Response(data, status=status.HTTP_200_OK)
 
-    # def create(self, request, *args, **kwargs):
-    #     serializer = ServerSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         server = Server.objects.create(**serializer.validated_data)
-    #         return Response(
-    #             ServerSerializer(server).data, status=status.HTTP_201_CREATED
-    #         )
-    #     else:
-    #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def create(self, request, *args, **kwargs):
+        serializer = ServerSerializer(data=request.data)
+        if serializer.is_valid():
+            server = Server.objects.create(**serializer.validated_data)
+            return Response(
+                ServerSerializer(server).data, status=status.HTTP_201_CREATED
+            )
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CategoryListViewSet(ModelViewSet):

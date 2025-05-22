@@ -46,7 +46,7 @@ export default function PopularChannels({ primaryDrawerStatus }) {
           }}
           component={"div"}
         >
-          Popular Channels
+          Popular Servers
         </Typography>
       </Box>
       <List>
