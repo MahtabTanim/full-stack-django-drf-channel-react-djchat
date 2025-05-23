@@ -3,6 +3,7 @@ from django.urls import path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.routers import DefaultRouter
 from server.views import (
+    ChannelListViewSet,
     ServerListViewSet,
     CategoryListViewSet,
     MessageListViewSet,
@@ -23,6 +24,7 @@ router.register("api/server/select", ServerListViewSet, basename="server")
 router.register("api/categories/select", CategoryListViewSet, basename="categories")
 router.register("api/messages", MessageListViewSet, basename="messages")
 router.register("api/user", UserListViewSet, basename="user_list")
+router.register("api/channel", ChannelListViewSet, basename="channel")
 router.register(
     r"api/membership/(?P<server_id>\d+)/membership",
     ServerMembershipViewset,

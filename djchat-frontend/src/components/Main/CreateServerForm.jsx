@@ -1,5 +1,10 @@
-import djchatLogo from "../../assets/logo.png";
 import { useFormik } from "formik";
+import axios from "axios";
+import { requestUrl } from "../contexts/Urls";
+import { useState, useEffect } from "react";
+import useServerCategoryService from "../../services/ServerCategoryService";
+import { useNavigate } from "@tanstack/react-router";
+
 import {
   Box,
   Avatar,
@@ -13,8 +18,6 @@ import {
   Select,
 } from "@mui/material";
 
-const categories = ["aaaa", 2, 3, 4];
-
 const validate = (values) => {
   const errors = {};
 
@@ -26,8 +29,8 @@ const validate = (values) => {
     errors.category = "Required";
   }
 
-  const validImageTypes = [".jpg", ".jpeg", ".png"];
-  const validBannerTypes = [".svg", ".jpg", ".jpeg", ".png"];
+  const validImageTypes = [".jpg", ".jpeg", ".png", ".svg"];
+  const validBannerTypes = [".jpg", ".jpeg", ".png"];
 
   const validateFile = (file, validExtensions) => {
     if (!file) return true;
@@ -36,17 +39,35 @@ const validate = (values) => {
   };
 
   if (values.icon && !validateFile(values.icon, validImageTypes)) {
-    errors.icon = "Invalid file type. Must be .jpg, .jpeg, or .png";
+    errors.icon = "Invalid file type. Must be .jpg, .jpeg, .svg or .png";
   }
 
   if (values.banner && !validateFile(values.banner, validBannerTypes)) {
-    errors.banner = "Invalid file type. Must be .svg, .jpg, .jpeg, or .png";
+    errors.banner = "Invalid file type. Must be .jpg, .jpeg, or .png";
   }
 
   return errors;
 };
 
 export default function CreateServerForm() {
+  const navigattor = useNavigate();
+  const { createServer } = useServerCategoryService();
+  const query_string = `${requestUrl}/categories/select/`;
+
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(query_string, { withCredentials: true })
+      .then((res) => {
+        setCategories(res.data);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch categories:", err);
+        setCategories([]);
+      });
+  }, []);
+
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -56,14 +77,17 @@ export default function CreateServerForm() {
       banner: null,
     },
     validate,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       const formData = new FormData();
       Object.entries(values).forEach(([key, value]) => {
         if (value) formData.append(key, value);
       });
-
-      // send `formData` to the backend via fetch or Axios
-      console.log("Submitting form:", values);
+      const response = await createServer(formData);
+      if (response.success) {
+        navigattor({ to: "/" });
+      } else {
+        alert(response.message);
+      }
     },
   });
 
@@ -107,7 +131,7 @@ export default function CreateServerForm() {
             onChange={formik.handleChange}
             label="Category"
           >
-            {categories.map((cat) => (
+            {categories.map((cat, index) => (
               <MenuItem key={cat.id} value={cat.id}>
                 {cat.name}
               </MenuItem>
@@ -121,7 +145,7 @@ export default function CreateServerForm() {
             type="file"
             name="icon"
             hidden
-            accept=".jpg,.jpeg,.png"
+            accept=".svg,.jpg,.jpeg,.png"
             onChange={(event) =>
               formik.setFieldValue("icon", event.currentTarget.files[0])
             }
@@ -139,7 +163,7 @@ export default function CreateServerForm() {
             type="file"
             name="banner"
             hidden
-            accept=".svg,.jpg,.jpeg,.png"
+            accept=".jpg,.jpeg,.png"
             onChange={(event) =>
               formik.setFieldValue("banner", event.currentTarget.files[0])
             }

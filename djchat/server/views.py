@@ -3,7 +3,12 @@ from rest_framework.viewsets import ViewSet, ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Server, Category, Channel
-from .serializers import ServerSerializer, CategorySerializer, MessageSeriaLizer
+from .serializers import (
+    ChannelSerializer,
+    ServerSerializer,
+    CategorySerializer,
+    MessageSeriaLizer,
+)
 from rest_framework.exceptions import AuthenticationFailed
 from . import schema
 from webchat.models import Message, Conversation
@@ -131,6 +136,7 @@ class ServerListViewSet(ModelViewSet):
         data = ServerSerializer(
             servers,
             many=True,
+            context={"request": request},
             # context={"total_members": total_members,}
         ).data
         return Response(data, status=status.HTTP_200_OK)
@@ -149,6 +155,12 @@ class ServerListViewSet(ModelViewSet):
 class CategoryListViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    http_method_names = ["get", "post"]
+
+
+class ChannelListViewSet(ModelViewSet):
+    queryset = Channel.objects.all()
+    serializer_class = ChannelSerializer
     http_method_names = ["get", "post"]
 
 

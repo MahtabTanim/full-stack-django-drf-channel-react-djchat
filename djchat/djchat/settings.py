@@ -124,6 +124,7 @@ REST_FRAMEWORK = {
         # "rest_framework_simplejwt.authentication.JWTAuthentication",
         "account.authenticate.JWTCookieAuthentication",
     ],
+    "DEFAULT_PAGINATION_CLASS": None,
 }
 
 SIMPLE_JWT = {
