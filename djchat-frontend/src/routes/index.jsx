@@ -6,11 +6,7 @@ import Homepage from "../pages/Homepage";
 export const Route = createFileRoute("/")({
   component: () => (
     // <ProtectedRoutes>
-    //   <MemberContextProvider>
-    //     <MembershipCheck>
     <Homepage />
-    //     </MembershipCheck>
-    //   </MemberContextProvider>
     // </ProtectedRoutes>
   ),
 });

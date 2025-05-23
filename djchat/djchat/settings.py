@@ -6,18 +6,11 @@ import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-
 SECRET_KEY = os.environ.get("SECRET_KEY", "insecure-local-key")
-
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", False)
-
+DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 
@@ -75,11 +68,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "djchat.wsgi.application"
 
-DATABASES = {"default": dj_database_url.config(conn_max_age=600, ssl_require=True)}
+# DATABASES = {"default": dj_database_url.config(conn_max_age=600, ssl_require=True)}
 
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+    }
+}
 
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -97,9 +94,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
-
 LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"
@@ -108,9 +102,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = "static/"
@@ -122,9 +113,6 @@ STATICFILES_DIRS = [
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "media/"
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "account.User"
@@ -145,6 +133,8 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_NAME": "access",
     "REFRESH_TOKEN_NAME": "refresh",
     "JWT_COOKIE_SAMESITE": "None",
+    # "JWT_COOKIE_DOMAIN" : ".djchat.space",
+    "JWT_COOKIE_DOMAIN": "127.0.0.1",
 }
 
 SPECTACULAR_SETTINGS = {
@@ -158,6 +148,8 @@ SPECTACULAR_SETTINGS = {
 CORS_ALLOWED_ORIGINS = [
     "https://djchat.space",
     "https://www.djchat.space",
+    "http://localhost:5173/",
+    "http://127.0.0.1:5173/",
 ]
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
@@ -165,6 +157,8 @@ CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = [
     "https://djchat.space",
     "https://www.djchat.space",
+    "http://localhost:5173/",
+    "http://127.0.0.1:5173/",
 ]
 
 # django channel settings

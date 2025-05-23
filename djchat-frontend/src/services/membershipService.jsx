@@ -1,6 +1,6 @@
 import { useState } from "react";
 import useJwtInterceptor from "../components/helpers/jwtinterceptor";
-
+import { requestUrl } from "../components/contexts/Urls";
 export default function useMembershipService() {
   const jwtAxios = useJwtInterceptor();
 
@@ -12,7 +12,7 @@ export default function useMembershipService() {
     setError(null);
     try {
       const result = await jwtAxios.post(
-        `https://backend.djchat.space/api/membership/${server_id}/membership/`,
+        `${requestUrl}/membership/${server_id}/membership/`,
         {},
         { withCredentials: true },
       );
@@ -29,7 +29,7 @@ export default function useMembershipService() {
     setError(null);
     try {
       const result = await jwtAxios.delete(
-        `https://backend.djchat.space/api/membership/${server_id}/membership/remove_member/`,
+        `${requestUrl}/membership/${server_id}/membership/remove_member/`,
         {},
         { withCredentials: true },
       );
@@ -46,7 +46,7 @@ export default function useMembershipService() {
     setError(null);
     try {
       const result = await jwtAxios.get(
-        `https://backend.djchat.space/api/membership/${server_id}/membership/is_member/`,
+        `${requestUrl}/membership/${server_id}/membership/is_member/`,
         { withCredentials: true },
       );
       setIsloading(false);

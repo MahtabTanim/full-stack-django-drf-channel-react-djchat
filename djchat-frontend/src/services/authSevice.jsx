@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { requestUrl } from "../components/contexts/Urls";
 
 export default function useAuthService() {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -10,7 +11,7 @@ export default function useAuthService() {
     return false;
   });
   const getUserDetails = async (id) => {
-    const url = `https://backend.djchat.space/api/user/${id}/`;
+    const url = `${requestUrl}/user/${id}/`;
     const result = await axios
       .get(url, {
         withCredentials: true,
@@ -35,7 +36,7 @@ export default function useAuthService() {
   const register = async (username, password, first_name, last_name) => {
     const result = await axios
       .post(
-        "https://backend.djchat.space/api/user/",
+        `${requestUrl}/user/`,
         {
           username,
           password,
@@ -57,7 +58,7 @@ export default function useAuthService() {
   const login = async (username, password) => {
     const result = await axios
       .post(
-        "https://backend.djchat.space/api/token/",
+        `${requestUrl}/token/`,
         {
           username,
           password,
@@ -82,7 +83,7 @@ export default function useAuthService() {
   const refreshAccessToken = async () => {
     try {
       await axios.post(
-        "https://backend.djchat.space/api/token/refresh",
+        `${requestUrl}/token/refresh`,
         {},
         { withCredentials: true },
       );
@@ -95,11 +96,7 @@ export default function useAuthService() {
     setIsLoggedIn(false);
     localStorage.removeItem("user_id");
     localStorage.removeItem("username");
-    axios.post(
-      "https://backend.djchat.space/api/logout",
-      {},
-      { withCredentials: true },
-    );
+    axios.post(`${requestUrl}/logout`, {}, { withCredentials: true });
     if (navigate) {
       navigate({ to: "/login" });
     }

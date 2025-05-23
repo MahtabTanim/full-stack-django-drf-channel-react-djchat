@@ -3,7 +3,7 @@ import useWebSocket from "react-use-websocket";
 import axios from "axios";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-
+import { requestUrl, chatmessageUrl } from "../components/contexts/Urls";
 export default function useChatWebSocket(channel_id, server_id) {
   const [reconnectionAttempts, setReconnectionAttempts] = useState(0);
   const navigattor = useNavigate();
@@ -11,9 +11,10 @@ export default function useChatWebSocket(channel_id, server_id) {
   const { logout, refreshAccessToken } = useAuthService();
   // wss://backend.djchat.space/1/2
   const socketUrl = channel_id
-    ? `wss://backend.djchat.space/${server_id}/${channel_id}`
+    ? `wss://127.0.0.1:8000/${server_id}/${channel_id}`
     : null;
-  const messageUrl = `https://backend.djchat.space/api/messages/?channel_id=${channel_id}`;
+  console.log(socketUrl);
+  const messageUrl = `${requestUrl}/messages/?channel_id=${channel_id}`;
   const [newMessage, setNewMessage] = useState([]);
   const { sendJsonMessage } = useWebSocket(socketUrl, {
     onOpen: async () => {

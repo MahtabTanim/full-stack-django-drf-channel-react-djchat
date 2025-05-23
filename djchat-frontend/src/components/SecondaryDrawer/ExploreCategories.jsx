@@ -13,6 +13,7 @@ import { Link } from "@tanstack/react-router";
 import { useTheme } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { requestUrl } from "../contexts/Urls";
 
 export default function ExploreCategories() {
   const theme = useTheme();
@@ -21,7 +22,7 @@ export default function ExploreCategories() {
     queryKey: ["api/categories"],
     queryFn: () =>
       axios
-        .get("https://backend.djchat.space/api/categories/select/", {
+        .get(`${requestUrl}/categories/select/`, {
           withCredentials: true,
         })
         .then((res) => {

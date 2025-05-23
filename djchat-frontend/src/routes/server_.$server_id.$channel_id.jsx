@@ -7,12 +7,12 @@ export const Route = createFileRoute("/server_/$server_id/$channel_id")({
   component: () => {
     return (
       // <ProtectedRoutes>
-      //   <MemberContextProvider>
-      //     <MembershipCheck>
-      <Server />
-      /// </MembershipCheck>
-      //</MemberContextProvider>
-      //</ProtectedRoutes>
+      <MemberContextProvider>
+        <MembershipCheck>
+          <Server />/{" "}
+        </MembershipCheck>
+      </MemberContextProvider>
+      // </ProtectedRoutes>
     );
   },
 });

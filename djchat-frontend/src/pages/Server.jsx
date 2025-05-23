@@ -11,11 +11,12 @@ import { useNavigate } from "@tanstack/react-router";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "@tanstack/react-router";
+import { requestUrl } from "../components/contexts/Urls";
 
 export default function Server() {
   const navigate_initiator = useNavigate();
   const { server_id, channel_id } = useParams({ strict: false });
-  const queryUrl = `https://backend.djchat.space/api/server/select/${server_id}`;
+  const queryUrl = `${requestUrl}/server/select/${server_id}`;
   const { isLoading, error, data } = useQuery({
     queryKey: ["api/server/", server_id],
     queryFn: () =>

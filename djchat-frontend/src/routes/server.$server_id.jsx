@@ -7,11 +7,11 @@ export const Route = createFileRoute("/server/$server_id")({
   component: () => {
     return (
       // <ProtectedRoutes>
-      //   <MemberContextProvider>
-      //     <MembershipCheck>
-      <Server />
-      //     </MembershipCheck>
-      //   </MemberContextProvider>
+      <MemberContextProvider>
+        <MembershipCheck>
+          <Server />
+        </MembershipCheck>
+      </MemberContextProvider>
       // </ProtectedRoutes>
     );
   },

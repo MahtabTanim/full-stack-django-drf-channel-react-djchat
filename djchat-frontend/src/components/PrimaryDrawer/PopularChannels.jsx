@@ -12,7 +12,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import axios from "axios";
-
+import { requestUrl } from "../contexts/Urls";
 export default function PopularChannels({ primaryDrawerStatus }) {
   const boxStyles = {
     height: 50,
@@ -25,7 +25,7 @@ export default function PopularChannels({ primaryDrawerStatus }) {
     queryKey: ["api/server/all"],
     queryFn: () =>
       axios
-        .get("https://backend.djchat.space/api/server/select/", {
+        .get(`${requestUrl}/server/select/`, {
           withCredentials: true,
         })
         .then((res) => {

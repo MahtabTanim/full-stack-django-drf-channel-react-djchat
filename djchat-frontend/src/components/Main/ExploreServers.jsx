@@ -1,6 +1,7 @@
 import { useParams } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { requestUrl } from "../contexts/Urls";
 
 import {
   List,
@@ -22,7 +23,7 @@ import { Link } from "@tanstack/react-router";
 export default function ExploreServers() {
   const { categoryName } = useParams({ strict: false });
   const category = encodeURIComponent(categoryName);
-  const query_string = `https://backend.djchat.space/api/server/select/?category=${category}`;
+  const query_string = `${requestUrl}/server/select/?category=${category}`;
   const { isPending, data, error } = useQuery({
     queryKey: [`api/categories/${category}`],
     queryFn: () =>

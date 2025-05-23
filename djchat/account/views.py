@@ -33,7 +33,7 @@ class JwtSetCookieMixin:
                 httponly=True,
                 samesite=settings.SIMPLE_JWT["JWT_COOKIE_SAMESITE"],
                 secure=True,
-                domain=".djchat.space",
+                domain=settings.SIMPLE_JWT["JWT_COOKIE_DOMAIN"],
             )
         if response.data.get("access"):
             response.set_cookie(
@@ -43,7 +43,7 @@ class JwtSetCookieMixin:
                 httponly=True,
                 samesite=settings.SIMPLE_JWT["JWT_COOKIE_SAMESITE"],
                 secure=True,
-                domain=".djchat.space",
+                domain=settings.SIMPLE_JWT["JWT_COOKIE_DOMAIN"],
             )
             del response.data["access"]
         return super().finalize_response(request, response, *args, **kwargs)

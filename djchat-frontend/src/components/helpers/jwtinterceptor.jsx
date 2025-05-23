@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useNavigate } from "@tanstack/react-router";
 import useAuthService from "../../services/authSevice";
+import { requestUrl } from "../contexts/Urls";
 
 export default function useJwtInterceptor() {
   const navigattor = useNavigate();
@@ -24,7 +25,7 @@ export default function useJwtInterceptor() {
 
         try {
           const refreshResponse = await axios.post(
-            "https://backend.djchat.space/api/token/refresh",
+            `${requestUrl}/token/refresh`,
             { withCredentials: true }, // Ensure cookies are sent
           );
           if (refreshResponse.status === 200) {
