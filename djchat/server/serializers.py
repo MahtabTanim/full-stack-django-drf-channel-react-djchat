@@ -19,7 +19,7 @@ class ServerSerializer(serializers.ModelSerializer):
     channel_server = ChannelSerializer(many=True, required=False)
     total_members = serializers.SerializerMethodField()
     category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
-    icon = serializers.SerializerMethodField()
+    # icon = serializers.SerializerMethodField()
 
     class Meta:
         model = Server
@@ -45,14 +45,14 @@ class ServerSerializer(serializers.ModelSerializer):
         rep["category"] = CategorySerializer(instance.category).data
         return rep
 
-    def get_icon(self, obj):
-        request = self.context.get("request")
-        if obj.icon:
-            icon_url = obj.icon.url
-            if request is not None:
-                return request.build_absolute_uri(icon_url)
-            return icon_url
-        return None
+    # def get_icon(self, obj):
+    #     request = self.context.get("request")
+    #     if obj.icon:
+    #         icon_url = obj.icon.url
+    #         if request is not None:
+    #             return request.build_absolute_uri(icon_url)
+    #         return icon_url
+    #     return None
 
     def validate(self, data):
         """

@@ -142,7 +142,7 @@ class ServerListViewSet(ModelViewSet):
         return Response(data, status=status.HTTP_200_OK)
 
     def create(self, request, *args, **kwargs):
-        serializer = ServerSerializer(data=request.data)
+        serializer = ServerSerializer(data=request.data, context={"request": request})
         if serializer.is_valid():
             server = Server.objects.create(**serializer.validated_data)
             return Response(

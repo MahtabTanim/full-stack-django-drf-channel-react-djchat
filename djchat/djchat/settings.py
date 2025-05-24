@@ -98,9 +98,6 @@ USE_TZ = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = "static/"
-STATICFILES_DIRS = [
-    "/static",
-]
 
 # media section
 
@@ -139,8 +136,8 @@ SPECTACULAR_SETTINGS = {
 CORS_ALLOWED_ORIGINS = [
     "https://djchat.space",
     "https://www.djchat.space",
-    "http://localhost:5173/",
-    "http://127.0.0.1:5173/",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
 ]
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
@@ -148,8 +145,8 @@ CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = [
     "https://djchat.space",
     "https://www.djchat.space",
-    "http://localhost:5173/",
-    "http://127.0.0.1:5173/",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
 ]
 
 # django channel settings

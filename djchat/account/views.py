@@ -5,7 +5,6 @@ from .serializers import (
     CustomTokenObtainPairSerializer,
     CustomTokenRefreshSerializer,
 )
-from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.conf import settings
 from rest_framework.views import APIView
@@ -17,9 +16,6 @@ from rest_framework.response import Response
 class UserListViewSet(ModelViewSet):
     serializer_class = UserSerializer
     queryset = User.objects.all()
-    permission_classes = [
-        IsAuthenticated,
-    ]
     http_method_names = ["get", "post"]
 
 
@@ -60,6 +56,12 @@ class JWTCookieTokenRefreshView(JwtSetCookieMixin, TokenRefreshView):
 class LogOutApiView(APIView):
     def post(self, request, format=None):
         response = Response("Logged Out Successfully")
-        response.set_cookie("refresh", "", expires=0)
-        response.set_cookie("access", "", expires=0)
+        cookie_settings = {
+            "httponly": True,
+            "samesite": settings.SIMPLE_JWT["JWT_COOKIE_SAMESITE"],
+            "secure": True,
+            "domain": settings.SIMPLE_JWT["JWT_COOKIE_DOMAIN"],
+        }
+        response.set_cookie("refresh", "", expires=0, **cookie_settings)
+        response.set_cookie("access", "", expires=0, **cookie_settings)
         return response
