@@ -55,12 +55,13 @@ function ChannelForm({ server_id }) {
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate>
             <TextField
-              label="Name (Optional)"
+              label="Name"
               name="name"
               value={formData.name}
               onChange={handleChange}
               fullWidth
               margin="normal"
+              required={true}
             />
             <TextField
               label="Topic *"
