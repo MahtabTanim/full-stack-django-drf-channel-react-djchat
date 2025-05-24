@@ -10,6 +10,7 @@ export default function Explore() {
   return (
     <>
       <Box sx={{ display: "flex" }}>
+        <h1>Hello world</h1>
         <CssBaseline />
         <PrimaryAppBar />
         <PrimaryDrawer>

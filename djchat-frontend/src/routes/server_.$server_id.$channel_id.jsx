@@ -6,13 +6,13 @@ import MembershipCheck from "../components/JoinServer/MembershipCheck";
 export const Route = createFileRoute("/server_/$server_id/$channel_id")({
   component: () => {
     return (
-      // <ProtectedRoutes>
-      <MemberContextProvider>
-        <MembershipCheck>
-          <Server />/{" "}
-        </MembershipCheck>
-      </MemberContextProvider>
-      // </ProtectedRoutes>
+      <ProtectedRoutes>
+        <MemberContextProvider>
+          <MembershipCheck>
+            <Server />
+          </MembershipCheck>
+        </MemberContextProvider>
+      </ProtectedRoutes>
     );
   },
 });

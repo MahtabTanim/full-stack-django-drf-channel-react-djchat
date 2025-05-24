@@ -17,6 +17,7 @@ import { useTheme } from "@mui/material";
 import Scroll from "./Scroller";
 
 import useChatWebSocket from "../../services/chatService";
+import CreateChannelForm from "./CreateChannelForm";
 
 export default function MessageInterface(data) {
   const theme = useTheme();
@@ -93,6 +94,7 @@ export default function MessageInterface(data) {
               Welcome to {server_name}
             </Typography>
             <Typography sx={{ mt: 1 }}>{server_description}</Typography>
+            <CreateChannelForm server_id={server_id} />
           </Box>
         </Box>
       ) : (

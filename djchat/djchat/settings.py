@@ -68,14 +68,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "djchat.wsgi.application"
 
-# DATABASES = {"default": dj_database_url.config(conn_max_age=600, ssl_require=True)}
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-    }
-}
+DATABASES = {"default": dj_database_url.config(conn_max_age=600, ssl_require=True)}
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -120,8 +113,6 @@ AUTH_USER_MODEL = "account.User"
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        # "rest_framework.authentication.SessionAuthentication",
-        # "rest_framework_simplejwt.authentication.JWTAuthentication",
         "account.authenticate.JWTCookieAuthentication",
     ],
     "DEFAULT_PAGINATION_CLASS": None,
@@ -134,8 +125,7 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_NAME": "access",
     "REFRESH_TOKEN_NAME": "refresh",
     "JWT_COOKIE_SAMESITE": "None",
-    # "JWT_COOKIE_DOMAIN" : ".djchat.space",
-    "JWT_COOKIE_DOMAIN": "127.0.0.1",
+    "JWT_COOKIE_DOMAIN": ".djchat.space",
 }
 
 SPECTACULAR_SETTINGS = {

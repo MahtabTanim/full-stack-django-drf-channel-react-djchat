@@ -11,9 +11,8 @@ export default function useChatWebSocket(channel_id, server_id) {
   const { logout, refreshAccessToken } = useAuthService();
   // wss://backend.djchat.space/1/2
   const socketUrl = channel_id
-    ? `wss://127.0.0.1:8000/${server_id}/${channel_id}`
+    ? `${chatmessageUrl}/${server_id}/${channel_id}`
     : null;
-  console.log(socketUrl);
   const messageUrl = `${requestUrl}/messages/?channel_id=${channel_id}`;
   const [newMessage, setNewMessage] = useState([]);
   const { sendJsonMessage } = useWebSocket(socketUrl, {

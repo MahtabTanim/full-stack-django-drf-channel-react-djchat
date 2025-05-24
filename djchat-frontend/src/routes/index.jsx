@@ -5,8 +5,8 @@ import MembershipCheck from "../components/JoinServer/MembershipCheck";
 import Homepage from "../pages/Homepage";
 export const Route = createFileRoute("/")({
   component: () => (
-    // <ProtectedRoutes>
-    <Homepage />
-    // </ProtectedRoutes>
+    <ProtectedRoutes>
+      <Homepage />
+    </ProtectedRoutes>
   ),
 });
