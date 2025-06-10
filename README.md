@@ -4,6 +4,30 @@ This is a full-stack real-time chat application built using **React**, **Django*
 
 ---
 
+## 🌐 Live Deployments
+
+- 🔵 **Frontend (React)**: [https://djchat.space](https://djchat.space)
+- 🔴 **API Documentation (Swagger)**: [https://backend.djchat.space/api/schema/ui/](https://backend.djchat.space)
+- 📊 **API Schema**: [https://backend.djchat.space/api/schema/](https://backend.djchat.space/api/schema/)
+
+---
+
+## 📚 Table of Contents
+
+- [Core Features](#-core-features)
+- [Main Frontend Components](#-main-frontend-components)
+- [Server Functionality](#-server-functionality)
+- [API Endpoints](#-api-endpoints)
+- [Challenges Faced & Solutions](#️-challenges-faced--solutions)
+- [Screenshots](#️-screenshots)
+- [Development Setup](#-development-setup)
+- [Deployment Procedures](#️-deployment-procedures)
+- [Tech Stack](#-tech-stack)
+- [Key Features Implemented](#-key-features-implemented)
+- [Configuration Highlights](#-configuration-highlights)
+
+---
+
 ## 🚀 Core Features
 
 ### 🔒 Authentication
@@ -11,89 +35,156 @@ This is a full-stack real-time chat application built using **React**, **Django*
 - JWT-based authentication using `djangorestframework-simplejwt`
 - Access and refresh tokens handled via **HTTPOnly cookies**
 - Automatic access token refresh using **Axios interceptors**
+- Custom **WebSocket middleware** for JWT token validation in real-time connections
 
 ### 📡 Real-Time Chat
 
 - Real-time communication using **WebSockets** powered by **Django Channels**
 - **Custom WebSocket middleware** to validate JWT tokens for secure socket communication
+- Auto-refresh access tokens during WebSocket sessions
 
 ### 🖼️ Media & Icon Handling
 
 - File uploads with custom validations for **SVG** icon files
 - Restriction on icon dimensions (e.g., **70x70px** max size)
+- **User model with icon support** for profile customization
 
 ### 🌐 Frontend
 
 - Built with **React** using **Vite**
 - Styled with **Material UI**
 - Uses **TanStack Router** for routing and **TanStack Query** for efficient data fetching and caching
-- **Context API** used for managing global theme (light/dark)
-- **Axios** for API requests and automatic token refreshing
+- **Context API** used for managing global theme (light/dark mode)
+- **Axios** for API requests with JWT interceptor for automatic token refreshing
 
 ### 🧠 Backend
 
 - Django + Django REST Framework
 - Authentication with **SimpleJWT**
-- Real-time support with **Django Channels** + **Uvicorn**
-- **drf-spectacular** + **Swagger UI** for API documentation
+- Real-time support with **Django Channels** + **Uvicorn** for ASGI request handling
+- **drf-spectacular** + **Swagger UI** for comprehensive API documentation
 
 ---
 
 ## 🧩 Main Frontend Components
 
-- `PrimaryAppBar`: Top navbar
-- `PrimarySidebar`: Navigation sidebar
-- `SecondarySidebar`: Contextual navigation
-- `MainArea`: Chat window
+- **`PrimaryAppBar`**: Top navigation bar with user controls
+- **`PrimarySidebar`**: Main navigation sidebar for server browsing
+- **`SecondarySidebar`**: Contextual navigation for channels and members
+- **`MainArea`**: Primary chat interface and message display
 
 ---
 
 ## 🎯 Server Functionality
 
-- Servers can be **filtered**:
-  - By **User**
-  - By **Server ID**
-  - By **Server quantity**
+- **Advanced Server Filtering**:
+  - Filter by **User** (servers you're a member of)
+  - Filter by **Server ID** (specific server lookup)
+  - Filter by **Server Quantity** (limit results)
 - Real-time **join** and **leave server** actions
-- Custom logic and validation for server-side file uploads
+- Custom validation for server-side file uploads
+- Dynamic server membership management
+
+---
+
+## 📡 API Endpoints
+
+The application provides a comprehensive REST API with the following key endpoints:
+
+### Authentication Endpoints
+
+- `POST /api/token/` - Obtain JWT access and refresh tokens
+- `POST /api/token/refresh` - Refresh access token using refresh token
+- `POST /api/logout` - Logout and clear HTTPOnly cookies
+
+### Core API Endpoints
+
+- `GET /api/server/select/` - List and filter servers
+- `GET /api/categories/select/` - List server categories
+- `GET /api/channel/` - List channels within servers
+- `GET /api/messages/` - Retrieve chat messages
+- `GET /api/user/` - User management and profiles
+- `GET/POST /api/membership/{server_id}/membership/` - Server membership operations
+
+### Documentation
+
+- `GET /api/schema/` - OpenAPI schema
+- `GET /api/schema/ui/` - Interactive Swagger UI documentation
+
+### WebSocket Endpoints
+
+- `ws://<server_id>/<channel_id>` - Real-time chat WebSocket connection
 
 ---
 
 ## ⚠️ Challenges Faced & Solutions
 
-### 🔁 **Deploying Frontend and Backend to Different Providers**
+### 🚀 **Deployment Architecture**
 
-- Both apps are hosted under the same domain but on **different platforms**
-- Required careful CORS configuration and domain routing
+- **Challenge**: Deploying frontend and backend to different cloud providers while maintaining same domain
+- **Solution**: Configured subdomain routing with proper DNS settings and reverse proxy configuration
+- **Result**: Frontend at `djchat.space` and API at `backend.djchat.space`
 
-### 🌍 **CORS and Cookie Issues**
+### 🌍 **CORS and Cookie Management**
 
-- Managed **CORS setup** to allow frontend-backend communication
-- Ensured **HTTPOnly cookies** were properly set and cleared during login/logout
-- Handled `SameSite` attributes and secure settings for cross-site cookies
+- **Challenge**: Cross-origin requests and HTTPOnly cookie handling between different domains
+- **Solution**:
+  - Configured Django CORS settings for cross-domain requests
+  - Set proper `SameSite` and `Secure` attributes for cookies
+  - Implemented custom cookie handling for login/logout flows
+- **Result**: Seamless authentication across frontend and backend
 
-### 🧪 **Django Channels Integration**
+### 🔌 **Django Channels Integration**
 
-- Implemented **WebSocket authentication** using JWTs
-- Used **custom ASGI middleware** to validate access tokens for every socket connection
-- Auto-refreshing tokens mid-WebSocket session if expired
+- **Challenge**: Implementing secure WebSocket connections with JWT authentication
+- **Solution**:
+  - Created custom ASGI middleware for WebSocket JWT validation
+  - Implemented token refresh mechanism for long-lived WebSocket connections
+  - Added proper error handling for authentication failures
+- **Result**: Secure real-time communication with automatic token management
 
-### 🔐 **JWT Authentication via Cookies**
+### 🔐 **JWT Authentication Strategy**
 
-- Access tokens stored in memory; refresh tokens stored in **HTTPOnly cookies**
-- Axios **JWT interceptor** set up to request new access tokens using refresh tokens automatically
+- **Challenge**: Secure token storage and automatic refresh mechanism
+- **Solution**:
+  - Access tokens stored in memory (short-lived)
+  - Refresh tokens in HTTPOnly cookies (secure, long-lived)
+  - Axios interceptor for automatic token refresh
+  - Custom JWT interceptor for cookie management
+- **Result**: Secure, seamless authentication experience
 
-### ⚙️ **Custom Middleware for Channel Authentication**
+### ⚙️ **Custom Middleware Implementation**
 
-- Wrote a custom ASGI middleware to:
-  - Extract tokens from cookies
-  - Validate user session
-  - Attach user to socket scope for message routing
+- **Challenge**: Validating user sessions in WebSocket connections
+- **Solution**:
+  - Built custom ASGI middleware to extract and validate JWT tokens
+  - Implemented user scope attachment for message routing
+  - Added automatic token refresh for expired sessions
+- **Result**: Secure WebSocket authentication with session management
 
-### 💾 **Purging and Managing Media Files**
+---
 
-- Deleted uploaded media directly from Heroku dyno via bash
-- Ensured `MEDIA_ROOT` is properly configured and regularly purged
+## 🖼️ Screenshots
+
+### Homepage Interface
+
+<img src="screenshots/homepage.png" alt="Homepage" height="300">
+
+### User Registration
+
+<img src="screenshots/retgister.png" alt="Registration" height="300">
+
+### Login Interface
+
+<img src="screenshots/logi8n.png" alt="Login" height="300">
+
+### Server Management
+
+<img src="screenshots/server.png" alt="Server" height="300">
+
+### Real-Time Chat
+
+<img src="screenshots/chat.png" alt="Chat Interface" height="300">
 
 ---
 
@@ -111,8 +202,10 @@ python manage.py migrate
 # Create superuser
 python manage.py createsuperuser
 
-# Run development server
+# Run development server with ASGI support
 python manage.py runserver
+# or for WebSocket support
+uvicorn djchat.asgi:application --reload
 ```
 
 ### 💻 Frontend Setup
@@ -130,65 +223,109 @@ npm run dev
 
 ---
 
-## 🌐 Live Deployments
+## 🏗️ Deployment Procedures
 
-- 🔵 **Frontend (React)**: [https://djchat.space](https://djchat.space)
-- 🔴 **API Docs (Swagger)**: [https://backend.djchat.space](https://backend.djchat.space)
+### Frontend Deployment (Netlify)
+
+I deployed the React frontend to Netlify following these steps:
+
+1. **Built the production bundle**: `npm run build`
+2. **Connected GitHub repository** to Netlify for automatic deployments
+3. **Configured build settings**:
+   - Build command: `npm run build`
+   - Publish directory: `dist`
+4. **Set up environment variables** in Netlify dashboard for API endpoints
+5. **Configured custom domain** `djchat.space` through Netlify DNS settings
+6. **Enabled automatic deploys** from the main branch for continuous deployment
+
+### Backend Deployment (Heroku)
+
+I deployed the Django backend to Heroku with PostgreSQL database:
+
+1. **Created Heroku app** and connected to GitHub repository
+2. **Added Heroku PostgreSQL add-on** for database service
+3. **Configured environment variables** in Heroku dashboard:
+   - `SECRET_KEY`, `DATABASE_URL` (auto-configured by Heroku Postgres)
+   - JWT settings and CORS configurations
+   - `ALLOWED_HOSTS` including the custom subdomain
+4. **Set up production settings** for CORS, database, and static files
+5. **Deployed using Git**: `git push heroku main`
+6. **Ran database migrations**: `heroku run python manage.py migrate`
+7. **Collected static files**: `heroku run python manage.py collectstatic`
+8. **Configured custom subdomain** `backend.djchat.space` through DNS settings
+9. **Enabled Heroku's built-in support** for both HTTP and WebSocket connections
+
+### Cross-Domain Configuration
+
+To handle the frontend and backend on different domains, I:
+
+1. **Configured CORS settings** in Django to allow requests from `djchat.space`
+2. **Set up proper cookie attributes** (`SameSite=None`, `Secure=True`) for cross-domain authentication
+3. **Configured DNS records** to point subdomains to respective hosting providers
+4. **Implemented custom cookie handling** in the frontend for cross-origin requests
+5. **Set up WebSocket CORS policies** to allow connections from the frontend domain
+
+### WebSocket Configuration
+
+1. **Ensured Heroku supports WebSockets** (enabled by default)
+2. **Configured ASGI application** with Uvicorn for WebSocket handling
+3. **Set up WebSocket routing** in Django Channels for real-time chat
+4. **Implemented custom middleware** for WebSocket JWT authentication
+5. **Configured proper CORS policies** for WebSocket connections across domains
 
 ---
 
 ## 📦 Tech Stack
 
-| Layer     | Technology                             |
-| --------- | -------------------------------------- |
-| Frontend  | React (Vite), Material UI              |
-| Routing   | TanStack Router                        |
-| Caching   | TanStack Query                         |
-| Theming   | React Context (Light/Dark Mode)        |
-| API Calls | Axios + JWT Interceptor                |
-| Backend   | Django, Django REST Framework          |
-| Auth      | SimpleJWT + HTTPOnly Cookies           |
-| Real-time | Django Channels + WebSockets + Uvicorn |
-| Docs      | Swagger UI (drf-spectacular)           |
+| Layer          | Technology                             |
+| -------------- | -------------------------------------- |
+| **Frontend**   | React (Vite), Material UI              |
+| **Routing**    | TanStack Router                        |
+| **Caching**    | TanStack Query                         |
+| **Theming**    | React Context (Light/Dark Mode)        |
+| **API Calls**  | Axios + JWT Interceptor                |
+| **Backend**    | Django, Django REST Framework          |
+| **Auth**       | SimpleJWT + HTTPOnly Cookies           |
+| **Real-time**  | Django Channels + WebSockets + Uvicorn |
+| **Docs**       | Swagger UI (drf-spectacular)           |
+| **Validation** | Custom SVG icon validation             |
 
 ---
 
-## 📸 Screenshots
+## 🎨 Key Features Implemented
 
-_Include relevant screenshots of the UI, real-time chat, and API docs if available._
+### Frontend Architecture
 
-Some challanges i have faced :
-Deploying the frontend and backend to multiple servers
-Same domain different providers
-CORS Cookies
-Django Channels
-Custom middleware to check channels authentication
-Set cookies on request to the login/access/refresh
-Used technologies:
-tanstack router , tansatck queries for caching
-Context layer for color mode in the frontend app
-Axios JWTInterceptor for gain access token using the refresh token
+- **Component-based design** with reusable Material UI components
+- **Global state management** using React Context for theme switching
+- **Efficient data fetching** with TanStack Query caching strategies
+- **Responsive design** optimized for desktop and mobile devices
 
-swagger UI
-Filetering Servers :
-by user , by id , by quantity
-Icons :
-custom validation models for accepting svg icon and specific size
-Frontend Material UI
-for frontend caching : Tanstack queruiies
-for routing : used tanstack router
-Context for lite and dark mode
-Main components of the frontend templating: primaryappbar , primarysidebar , secondarysidebar , main area
-Axios for api calls
-Axios iterceptor for intercept request to refresh access token
-Uvicorn for asgi request handling
-Simplejwt for access and refresh token
-JWT interceptor to set cookies on the browser
-Websocket custom middleware to handle asgi request validation / refresha ccess token on premise
-Setting HTTPonly cookies on login
-Removing HTTp only cookies on logout
+### Backend Architecture
 
-Live preview of frontend available at : https://djchat.space
-Spectacular API view backend available at : https://backend.djchat.space
+- **RESTful API design** with comprehensive endpoint coverage
+- **Real-time WebSocket integration** for instant messaging
+- **Custom authentication middleware** for WebSocket connections
+- **File upload handling** with SVG validation and size restrictions
+- **User model extensions** with profile icon support
 
-**\*\*\***Highlight the deployment procedures"**\*\*\*\***
+### Security Features
+
+- **HTTPOnly cookie authentication** preventing XSS attacks
+- **JWT token rotation** with automatic refresh mechanism
+- **CORS configuration** for secure cross-origin requests
+- **WebSocket authentication** with custom middleware validation
+
+---
+
+## 🔧 Configuration Highlights
+
+- **Custom User Model**: Extended with icon field for profile customization
+- **WebSocket Middleware**: Custom ASGI middleware for JWT validation
+- **File Validation**: SVG-specific validation with dimension restrictions
+- **Cookie Management**: Secure HTTPOnly cookie handling for authentication
+- **API Documentation**: Comprehensive Swagger UI with interactive endpoints
+
+---
+
+This project demonstrates a production-ready full-stack application with modern web technologies, secure authentication, and real-time communication capabilities.
